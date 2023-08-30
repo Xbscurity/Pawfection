@@ -101,7 +101,7 @@
     </style>
 </head>
 <body>
-    <form asp-action="Create" method="post">
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
 
         <div class="form-container">
             <div class="form-column">
@@ -156,7 +156,7 @@
                 </div>
                 <div class="form-field">
                     <label asp-for="ImagePath">Image Description:</label>
-                    <input asp-for="ImagePath" class="form-control" placeholder="pet's Image'" />
+                    <input asp-for="ImagePath" type ="file" class="form-control" placeholder="pet's Image'" />
                     <span asp-validation-for="ImagePath" class="text-danger"></span>
                 </div>
                 <div class="form-field checkbox-label">

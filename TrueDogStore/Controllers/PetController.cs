@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TrueDogStore.Data;
 using TrueDogStore.Interfaces;
 using TrueDogStore.Models;
+using TrueDogStore.ViewModels;
 
 namespace TrueDogStore.Controllers
 {
@@ -11,12 +12,14 @@ namespace TrueDogStore.Controllers
         private readonly IPetRepository _petRepository;
         private readonly ILogger<Pet> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly IPhotoService _photoService;
 
-        public PetController(IPetRepository petRepository, ILogger<Pet> logger, ApplicationDbContext context)
+        public PetController(IPetRepository petRepository, ILogger<Pet> logger, ApplicationDbContext context, IPhotoService photoService)
         {
             _petRepository = petRepository;
             _logger = logger;
             _context = context;
+            _photoService = photoService;
         }
         public async Task<IActionResult> Index()
         {
@@ -41,15 +44,9 @@ namespace TrueDogStore.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Pet pet)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                foreach (var key in ModelState.Keys)
-                {
-                    foreach (var error in ModelState[key].Errors)
-                    {
-                        _logger.LogError($"Validation error for {key}: {error.ErrorMessage}");
-                    }
-                }
+              // var result = await _photoService.AddPhotoAsync(pet.ImagePath)
                 var shelter = _context.Shelters.FirstOrDefault(s => s.Name == pet.Shelter.Name);
 
                 if (shelter != null)

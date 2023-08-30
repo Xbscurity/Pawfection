@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TrueDogStore.Data;
+using TrueDogStore.Helpers;
 using TrueDogStore.Interfaces;
 using TrueDogStore.Repository;
 
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPetRepository, PetRepository>();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
