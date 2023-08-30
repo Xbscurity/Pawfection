@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "FAQ";
+}
+<style>
+    .accordion-body {
+        background-color: #f5f5f5;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+</style>
+<div class="container mt-5">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="questionHeading1">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseQuestion1" aria-expanded="true" aria-controls="collapseQuestion1">
+                    How can I adopt a dog from your shelter?
+                </button>
+            </h3>
+            <div id="collapseQuestion1" class="accordion-collapse collapse" aria-labelledby="questionHeading1" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    To adopt a dog from our shelter, please visit our adoption center during our working hours and complete the adoption application form.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="questionHeading2">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseQuestion2" aria-expanded="false" aria-controls="collapseQuestion2">
+                    Is the adoption of dogs free?
+                </button>
+            </h3>
+            <div id="collapseQuestion2" class="accordion-collapse collapse" aria-labelledby="questionHeading2" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Yes, we offer free adoptions for dogs from our shelter to ensure they find loving homes.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="questionHeading7">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseQuestion7" aria-expanded="false" aria-controls="collapseQuestion7">
+                    Can I return a dog if it doesn't work out?
+                </button>
+            </h3>
+            <div id="collapseQuestion7" class="accordion-collapse collapse" aria-labelledby="questionHeading7" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    We understand that sometimes situations change. If you find that you're unable to keep the adopted dog, please contact us. We have a return policy to ensure the well-being of the dog.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="questionHeading12">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseQuestion12" aria-expanded="false" aria-controls="collapseQuestion12">
+                    What kind of support do you offer if I encounter challenges with my adopted dog?
+                </button>
+            </h3>
+            <div id="collapseQuestion12" class="accordion-collapse collapse" aria-labelledby="questionHeading12" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    We're here to help! If you face challenges with your adopted dog, please reach out to us. We offer advice, consultations, and if necessary, assistance in finding the best solution for both you and the dog.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="questionHeading8">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseQuestion8" aria-expanded="false" aria-controls="collapseQuestion8">
+                    What kind of medical care do the dogs receive before adoption?
+                </button>
+            </h3>
+            <div id="collapseQuestion8" class="accordion-collapse collapse" aria-labelledby="questionHeading8" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    All dogs receive a thorough medical examination, vaccinations, and are microchipped before being available for adoption to ensure they are healthy and ready for their new homes.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="questionHeading17">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseQuestion17" aria-expanded="false" aria-controls="collapseQuestion17">
+                    How long does the adoption process usually take?
+                </button>
+            </h3>
+            <div id="collapseQuestion17" class="accordion-collapse collapse" aria-labelledby="questionHeading17" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    The adoption process can vary but typically includes a thorough application review, a meet-and-greet session with the dog, and finalizing paperwork. It usually takes a few days to a week to complete.
+                </div>
+            </div>
+        </div>
+        <!-- More questions and answers can be added here -->
+    </div>
+</div>

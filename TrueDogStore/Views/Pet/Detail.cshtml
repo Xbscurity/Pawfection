@@ -1,0 +1,110 @@
+﻿@model Pet
+
+@{
+    ViewData["Title"] = "Pet Details";
+}
+<style>
+    
+    .dog-image {
+        width: 350px;
+        height: auto; 
+        
+    }
+    body
+    {
+    margin-top: 100px;
+    }
+</style>
+<body>
+<div class="container mt-5">
+    <div class="card mb-3">
+        <div class="card-header bg-primary text-white">
+            <h2 class="card-title">@Model?.Name</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @if (!string.IsNullOrEmpty(Model?.ImagePath))
+                {
+                    <img src="@Model.ImagePath" alt="Dog Image" class="img-fluid dog-image">
+                }
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-5">Age:</dt>
+                        <dd class="col-sm-7">@Model?.Age years</dd>
+
+                        <dt class="col-sm-5">Gender:</dt>
+                        <dd class="col-sm-7">@Model?.Gender</dd>
+
+                        <dt class="col-sm-5">Fur Length:</dt>
+                        <dd class="col-sm-7">@Model?.Fur_Length</dd>
+
+                        <dt class="col-sm-5">Color:</dt>
+                        <dd class="col-sm-7">@Model?.Color</dd>
+
+                        <dt class="col-sm-5">Weight:</dt>
+                        <dd class="col-sm-7">@Model?.Weight lbs</dd>
+
+                        <dt class="col-sm-5">Size:</dt>
+                        <dd class="col-sm-7">@Model?.Size?.Description</dd>
+
+                        <dt class="col-sm-5">Pet Activity:</dt>
+                        <dd class="col-sm-7">@Model?.Pet_Activity?.Name</dd>
+
+                        <dt class="col-sm-5">Pet Activity Description:</dt>
+                        <dd class="col-sm-7">@Model?.Pet_Activity?.Description</dd>
+                        <dt class="col-sm-5">Pet Activity Level:</dt>
+                        <dd class="col-sm-7">@Model?.Pet_Activity?.Activity_Level?.Name</dd>
+                        <dt class="col-sm-5">Pet Activity Level Description:</dt>
+                        <dd class="col-sm-7">@Model?.Pet_Activity?.Activity_Level?.Description</dd>
+
+                        <dt class="col-sm-5">Human Friendly:</dt>
+                        <dd class="col-sm-7">@(Model.Human_Friendly.HasValue ? (Model.Human_Friendly.Value ? "✔️" : "❌") : "N/A")</dd>
+
+                        <dt class="col-sm-5">Pet Friendly:</dt>
+                        <dd class="col-sm-7">@(Model.Pet_Friendly.HasValue ? (Model.Pet_Friendly.Value ? "✔️" : "❌") : "N/A")</dd>
+
+                        <dt class="col-sm-5">Apartment Friendly:</dt>
+                        <dd class="col-sm-7">@(Model.Apartment_Friendly.HasValue ? (Model.Apartment_Friendly.Value ? "✔️" : "❌") : "N/A")</dd>
+
+                        <dt class="col-sm-5">Leash Trained:</dt>
+                        <dd class="col-sm-7">@(Model.Leash_Trained.HasValue ? (Model.Leash_Trained.Value ? "✔️" : "❌") : "N/A")</dd>
+
+                        <dt class="col-sm-5">Litter Trained:</dt>
+                        <dd class="col-sm-7">@(Model.Litter_Trained.HasValue ? (Model.Litter_Trained.Value ? "✔️" : "❌") : "N/A")</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-light">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Breed:</strong> @Model.Breed.Name</p>
+                    <p><strong>Breed Description:</strong> @Model.Breed.Description</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Breed Group:</strong> @Model.Breed.Breed_Group.Name</p>
+                    <p><strong>Breed Group Description:</strong> @Model.Breed.Breed_Group.Description</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header bg-light">
+            <h4 class="card-title">Shelter</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Shelter:</strong> @Model.Shelter.Name</p>
+                    <p><strong>Address:</strong> @Model.Shelter.Address</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Phone:</strong> @Model.Shelter.Phone</p>
+                    <p><strong>Email:</strong> @Model.Shelter.Email</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>

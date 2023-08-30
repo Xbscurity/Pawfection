@@ -20,6 +20,7 @@ namespace TrueDogStore.Models
         [ForeignKey("Shelter")]
         public int ShelterId { get; set; }
         public Shelter? Shelter { get; set; }
+        public string? ImagePath { get; set; }
         public string? Name { get; set; }
         public string? Fur_Length { get; set; }
         public string? Color { get; set; }
@@ -31,5 +32,6 @@ namespace TrueDogStore.Models
         public bool? Apartment_Friendly { get; set; }
         public bool? Leash_Trained { get; set; }
         public bool? Litter_Trained { get; set; }
+
     }
 }

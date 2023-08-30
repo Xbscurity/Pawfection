@@ -17,7 +17,13 @@ namespace TrueDogStore.Data
                     Pet_Activity = new Pet_Activity()
                     {
                         Name = "Running",
-                        Description = "Loves to go for long runs"
+                        Description = "Loves to go for long runs",
+                        Activity_Level = new Activity_Level()
+                        {
+                            Name = "Low",
+                            Description = "Requires minimal exercise",
+
+                        }
                     },
                     Size = new Size()
                     {
@@ -41,6 +47,7 @@ namespace TrueDogStore.Data
                         Email = "info@bestfriends.com"
                     },
                     Name = "Max",
+                    ImagePath = "/images/golden-retriever-dog-breed-info.jpeg",
                     Fur_Length = "Medium",
                     Color = "Golden",
                     Weight = 30.2f,
@@ -59,7 +66,14 @@ namespace TrueDogStore.Data
                     Pet_Activity = new Pet_Activity()
                     {
                         Name = "Cuddling",
-                        Description = "Enjoys snuggling on the couch"
+                        Description = "Enjoys snuggling on the couch",
+                        Activity_Level = new Activity_Level()
+                        {
+                            Name = "High",
+                            Description = "Requires a lot of exercise",
+
+                        }
+
                     },
                     Size = new Size()
                     {
@@ -83,6 +97,7 @@ namespace TrueDogStore.Data
                         Email = "info@pawsome.com"
                     },
                     Name = "Bella",
+                    ImagePath = "/images/french_bulldog.jpg",
                     Fur_Length = "Short",
                     Color = "Fawn",
                     Weight = 18.7f,
@@ -99,7 +114,13 @@ namespace TrueDogStore.Data
                     Pet_Activity = new Pet_Activity()
                     {
                         Name = "Playful",
-                        Description = "Loves interactive playtime"
+                        Description = "Loves interactive playtime",
+                        Activity_Level = new Activity_Level()
+                        {
+                            Name = "High",
+                            Description = "Requires a lot of exercise",
+
+                        }
                     },
                     Size = new Size()
                     {
@@ -123,6 +144,7 @@ namespace TrueDogStore.Data
                         Email = "info@rescuehaven.com"
                     },
                     Name = "Rocky",
+                    ImagePath = "/images/german-shepherd-dog-breed-info.jpeg",
                     Fur_Length = "Medium",
                     Color = "Black and Tan",
                     Weight = 75.9f,
@@ -139,7 +161,13 @@ namespace TrueDogStore.Data
                     Pet_Activity = new Pet_Activity()
                     {
                         Name = "Grooming",
-                        Description = "Requires regular grooming sessions"
+                        Description = "Requires regular grooming sessions",
+                        Activity_Level = new Activity_Level()
+                        {
+                            Name = "Low",
+                            Description = "Requires minimal exercise",
+
+                        }
                     },
                     Size = new Size()
                     {
@@ -163,6 +191,7 @@ namespace TrueDogStore.Data
                         Email = "info@caringpaws.com"
                     },
                     Name = "Lola",
+                    ImagePath = "/images/toy-poodle.jpeg",
                     Fur_Length = "Long",
                     Color = "White",
                     Weight = 12.3f,
@@ -174,7 +203,6 @@ namespace TrueDogStore.Data
                     Leash_Trained = true,
                     Litter_Trained = true
                 };
-
                 context?.Pets.AddRange(new List<Pet>() { pet1, pet2, pet3, pet4 });
                 context?.SaveChanges();
             }

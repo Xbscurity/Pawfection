@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TrueDogStore.Data;
 using TrueDogStore.Interfaces;
 using TrueDogStore.Models;
 
@@ -8,10 +10,13 @@ namespace TrueDogStore.Controllers
     {
         private readonly IPetRepository _petRepository;
         private readonly ILogger<Pet> _logger;
-        public PetController(IPetRepository petRepository, ILogger<Pet> logger)
+        private readonly ApplicationDbContext _context;
+
+        public PetController(IPetRepository petRepository, ILogger<Pet> logger, ApplicationDbContext context)
         {
             _petRepository = petRepository;
             _logger = logger;
+            _context = context;
         }
         public async Task<IActionResult> Index()
         {
@@ -21,10 +26,16 @@ namespace TrueDogStore.Controllers
         public async Task<IActionResult> Detail(int id)
         {
             Pet pet = await _petRepository.GetByIdAsync(id);
+            if (pet == null)
+            {
+                return NotFound(); 
+            }
             return View(pet);
         }
         public IActionResult Create()
         {
+            var shelters = _context.Shelters.ToList(); 
+            ViewBag.Shelters = shelters;
             return View();
         }
         [HttpPost]
@@ -38,6 +49,14 @@ namespace TrueDogStore.Controllers
                     {
                         _logger.LogError($"Validation error for {key}: {error.ErrorMessage}");
                     }
+                }
+                var shelter = _context.Shelters.FirstOrDefault(s => s.Name == pet.Shelter.Name);
+
+                if (shelter != null)
+                {
+                    pet.ShelterId = shelter.Id;
+                    _context.Add(pet);
+                    await _context.SaveChangesAsync();
                 }
                 return View(pet);
             }

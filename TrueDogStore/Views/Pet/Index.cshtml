@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Pet>
+
+@{
+    ViewData["Title"] = "Pets";
+}
+
+<style>
+    /* Стиль для всех изображений собак */
+    .dog-image {
+        width: 300px; /* Задайте желаемую ширину */
+        height: 325px; /* Автоматическая высота для сохранения пропорций */
+    }
+</style>
+
+<div class="album py-5 bg-light">
+    <div class="container">
+
+        <div class="row row-cols-1 row-cols-md-3 g-3">
+            @foreach (var pet in Model)
+            {
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            @if (pet != null)
+                            {
+                                <h5 class="card-title">@pet.Breed.Name</h5>
+                                <p class="card-text">@pet.Shelter.Name</p>
+                                <div>
+                                    @if (!string.IsNullOrEmpty(pet.ImagePath))
+                                    {
+                                        <img src="@pet.ImagePath" alt="Dog Image" class="img-fluid dog-image">
+                                    }
+                                    else
+                                    {
+                                        <p>No image available</p>
+                                    }
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <div class="btn-group">
+                                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Pet" asp-action="Detail" asp-route-id="@pet.Id">View</a>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                    </div>
+                                    <small class="text-muted">@pet.Breed.Breed_Group.Name</small>
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="card-text">No pet information available</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
