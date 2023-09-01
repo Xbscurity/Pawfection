@@ -7,13 +7,8 @@ namespace TrueDogStore.Models
 {
     public class User : IdentityUser
     {
-        
-        public string? Nickname { get; set; }
-        public string? Password { get; set; }
-        [ForeignKey("User_Info")]
-        public int User_InfoId { get; set; }
-
-        public User_Info? User_Info { get; set; }
+        public string? Image { get;set; }
+        public ICollection<Pet> OwnedPets { get; set; }
 
     }
 }

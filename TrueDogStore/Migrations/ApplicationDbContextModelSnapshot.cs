@@ -38,7 +38,7 @@ namespace TrueDogStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ActivityLevels");
+                    b.ToTable("ActivityLevels", (string)null);
                 });
 
             modelBuilder.Entity("TrueDogStore.Models.Breed", b =>
@@ -62,7 +62,7 @@ namespace TrueDogStore.Migrations
 
                     b.HasIndex("Breed_GroupId");
 
-                    b.ToTable("Breeds");
+                    b.ToTable("Breeds", (string)null);
                 });
 
             modelBuilder.Entity("TrueDogStore.Models.Breed_Group", b =>
@@ -81,7 +81,7 @@ namespace TrueDogStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BreedGroups");
+                    b.ToTable("BreedGroups", (string)null);
                 });
 
             modelBuilder.Entity("TrueDogStore.Models.Pet", b =>
@@ -155,7 +155,7 @@ namespace TrueDogStore.Migrations
 
                     b.HasIndex("User_InfoId");
 
-                    b.ToTable("Pets");
+                    b.ToTable("Pets", (string)null);
                 });
 
             modelBuilder.Entity("TrueDogStore.Models.Pet_Activity", b =>
@@ -179,7 +179,7 @@ namespace TrueDogStore.Migrations
 
                     b.HasIndex("Activity_LevelId");
 
-                    b.ToTable("PetActivities");
+                    b.ToTable("PetActivities", (string)null);
                 });
 
             modelBuilder.Entity("TrueDogStore.Models.Shelter", b =>
@@ -204,7 +204,7 @@ namespace TrueDogStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shelters");
+                    b.ToTable("Shelters", (string)null);
                 });
 
             modelBuilder.Entity("TrueDogStore.Models.Size", b =>
@@ -220,7 +220,7 @@ namespace TrueDogStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sizes");
+                    b.ToTable("Sizes", (string)null);
                 });
 
             modelBuilder.Entity("TrueDogStore.Models.User", b =>
@@ -244,7 +244,7 @@ namespace TrueDogStore.Migrations
 
                     b.HasIndex("User_InfoId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("TrueDogStore.Models.User_Info", b =>
@@ -278,7 +278,7 @@ namespace TrueDogStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users_Infos");
+                    b.ToTable("Users_Infos", (string)null);
                 });
 
             modelBuilder.Entity("TrueDogStore.Models.Breed", b =>
