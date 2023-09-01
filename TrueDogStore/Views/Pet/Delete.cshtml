@@ -1,8 +1,7 @@
-﻿@using TrueDogStore.ViewModels
-@model CreatePetViewModel
+﻿@using TrueDogStore.ViewModels;
+@model Pet
 
-<!DOCTYPE html>
-<html>
+
 <head>
     <title>Add New Pet</title>
     <style>
@@ -52,6 +51,7 @@
                 width: 20px;
                 height: 20px;
                 cursor: pointer;
+              
             }
 
         .form-container {
@@ -71,108 +71,95 @@
             bottom: 20px; /* Отступ снизу */
             right: 20px; /* Отступ справа */
         }
-
-            .submit-button:hover {
-                background-color: #45a049; /* Темнее зеленый цвет при наведении */
-            }
-
-        #Pet_Friendly {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            margin-right: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
+        .confirm-button {                      
+            transition: background-color 0.3s ease;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
         }
 
-            #Pet_Friendly:checked {
-                background-color: #4CAF50;
-                border-color: #4CAF50;
-            }
-
-            #Pet_Friendly:disabled {
-                background-color: #ccc;
-                border-color: #ccc;
-                cursor: not-allowed;
-            }
-
+        .heading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px; /* Add some space between the heading and the form */
+        }
     </style>
 </head>
+<div class="heading-container">
+    <h1>Are you sure you want to delete this pet?</h1>
+</div>
 <body>
-    <form asp-action="Create" method="post" enctype="multipart/form-data">
+    <form method="post" asp-action="Delete" enctype="multipart/form-data">
+        <input type="hidden" value="ShelterId" id="ShelterId" />
+        <input type="hidden" value="Pet_ActivityId" id="Pet_ActivityId" />
+        <input type="hidden" value="SizeId" id="SizeId" />
+        <input type="hidden" value=" BreedId" id=" BreedId" />
 
         <div class="form-container">
             <div class="form-column">
                 <div class="form-field">
                     <label asp-for="Name">Name:</label>
-                    <input asp-for="Name" class="form-control" placeholder="What's the pet's name?" />
+                    <input asp-for="Name" class="form-control" placeholder="What's the pet's name?" readonly/>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
                     <label asp-for="Fur_Length">Fur Length:</label>
-                    <input asp-for="Fur_Length" class="form-control" placeholder="What's the length of the pet's fur?" />
+                    <input asp-for="Fur_Length" class="form-control" placeholder="What's the length of the pet's fur?" readonly />
                     <span asp-validation-for="Fur_Length" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
                     <label asp-for="Color">Color:</label>
-                    <input asp-for="Color" class="form-control" placeholder="What's the pet's color?" />
+                    <input asp-for="Color" class="form-control" placeholder="What's the pet's color?" readonly />
                     <span asp-validation-for="Color" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
                     <label asp-for="Weight">Weight:</label>
-                    <input asp-for="Weight" class="form-control" placeholder="How much does the pet weigh? (in pounds)" />
+                    <input asp-for="Weight" class="form-control" placeholder="How much does the pet weigh? (in pounds)" readonly />
                     <span asp-validation-for="Weight" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
                     <label asp-for="Age">Age:</label>
-                    <input asp-for="Age" class="form-control" placeholder="How old is the pet? (in years)" />
+                    <input asp-for="Age" class="form-control" placeholder="How old is the pet? (in years)" readonly />
                     <span asp-validation-for="Age" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
                     <label asp-for="Size.Description">Size Description:</label>
-                    <input asp-for="Size.Description" class="form-control" placeholder="Describe the pet's size" />
+                    <input asp-for="Size.Description" class="form-control" placeholder="Describe the pet's size" readonly />
                     <span asp-validation-for="Size.Description" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
                     <label asp-for="Gender">Gender:</label>
-                    <input asp-for="Gender" class="form-control" placeholder="What's the pet's gender?" />
+                    <input asp-for="Gender" class="form-control" placeholder="What's the pet's gender?" readonly />
                     <span asp-validation-for="Gender" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
-                    <label asp-for="Shelter.Id">Select a Shelter:</label>
-                    <select asp-for="Shelter.Id" asp-items="@(new SelectList(ViewBag.Shelters, "Id", "Name"))" class="form-control">
-                       
-                    </select>
-                    <span asp-validation-for="Shelter.Id" class="text-danger"></span>
+                    <label asp-for="Shelter.Name"></label>
+                    <input asp-for="Shelter.Name" class="form-control" readonly>
+                    
+                    <span asp-validation-for="Shelter.Name" class="text-danger"></span>
                 </div>
-                <div class="form-field">
-                    <label asp-for="ImagePath">Image Description:</label>
-                    <input asp-for="ImagePath" type ="file" class="form-control" placeholder="pet's Image'" />
-                    <span asp-validation-for="ImagePath" class="text-danger"></span>
-                </div>
+                
                 <div class="form-field checkbox-label">
-                    <input type="checkbox" id="Human_Friendly" name="Human_Friendly" value="true" checked />
+                    <input type="checkbox" id="Human_Friendly" name="Human_Friendly" value="true" checked disabled />
                     <input type="hidden" name="Human_Friendly" value="false" />
                     <label for="Human_Friendly">Is the pet friendly with other animals?</label>
                 </div>
                 <div class="form-field checkbox-label">
-                    <input type="checkbox" id="Pet_Friendly" name="Pet_Friendly" value="true" checked />
+                    <input type="checkbox" id="Pet_Friendly" name="Pet_Friendly" value="true" checked disabled />
                     <input type="hidden" name="Pet_Friendly" value="false" />
                     <label for="Pet_Friendly">Is the pet friendly with other animals?</label>
                 </div>
 
                 <div class="form-field checkbox-label">
-                    <input type="checkbox" id="Apartment_Friendly" name="Apartment_Friendly" value="true" checked />
+                    <input type="checkbox" id="Apartment_Friendly" name="Apartment_Friendly" value="true" checked disabled />
                     <input type="hidden" name="Apartment_Friendly" value="false" />
                     <label for="Apartment_Friendly">Is the pet suitable for apartment living?</label>
                 </div>
@@ -181,66 +168,71 @@
             <div class="form-column">
                 <div class="form-field">
                     <label asp-for="Breed.Name">Breed Name:</label>
-                    <input asp-for="Breed.Name" class="form-control" placeholder="What's the pet's breed name?" />
+                    <input asp-for="Breed.Name" class="form-control" placeholder="What's the pet's breed name?" readonly/>
                     <span asp-validation-for="Breed.Name" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
                     <label asp-for="Breed.Description">Breed Description:</label>
-                    <input asp-for="Breed.Description" class="form-control" placeholder="Describe the pet's breed" />
+                    <input asp-for="Breed.Description" class="form-control" placeholder="Describe the pet's breed" readonly/>
                     <span asp-validation-for="Breed.Description" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
                     <label asp-for="Breed.Breed_Group.Name">Breed Group Name:</label>
-                    <input asp-for="Breed.Breed_Group.Name" class="form-control" placeholder="What's the pet's breed group name?" />
+                    <input asp-for="Breed.Breed_Group.Name" class="form-control" placeholder="What's the pet's breed group name?" readonly/>
                     <span asp-validation-for="Breed.Breed_Group.Name" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
                     <label asp-for="Breed.Breed_Group.Description">Breed Group Description:</label>
-                    <input asp-for="Breed.Breed_Group.Description" class="form-control" placeholder="Describe the pet's breed group" />
+                    <input asp-for="Breed.Breed_Group.Description" class="form-control" placeholder="Describe the pet's breed group" readonly/>
                     <span asp-validation-for="Breed.Breed_Group.Description" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
                     <label asp-for="Pet_Activity.Name">Pet Activity Name:</label>
-                    <input asp-for="Pet_Activity.Name" class="form-control" placeholder="What's the pet's activity name?" />
+                    <input asp-for="Pet_Activity.Name" class="form-control" placeholder="What's the pet's activity name?" readonly/>
                     <span asp-validation-for="Pet_Activity.Name" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
                     <label asp-for="Pet_Activity.Description">Pet Activity Description:</label>
-                    <input asp-for="Pet_Activity.Description" class="form-control" placeholder="Describe the pet's activity" />
+                    <input asp-for="Pet_Activity.Description" class="form-control" placeholder="Describe the pet's activity" readonly/>
                     <span asp-validation-for="Pet_Activity.Description" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
                     <label asp-for="Pet_Activity.Activity_Level.Name">Activity Level Name:</label>
-                    <input asp-for="Pet_Activity.Activity_Level.Name" class="form-control" placeholder="What's the pet's activity level name?" />
+                    <input asp-for="Pet_Activity.Activity_Level.Name" class="form-control" placeholder="What's the pet's activity level name?" readonly/>
                     <span asp-validation-for="Pet_Activity.Activity_Level.Name" class="text-danger"></span>
                 </div>
 
                 <div class="form-field">
                     <label asp-for="Pet_Activity.Activity_Level.Description">Activity Level Description:</label>
-                    <input asp-for="Pet_Activity.Activity_Level.Description" class="form-control" placeholder="Describe the pet's activity level" />
+                    <input asp-for="Pet_Activity.Activity_Level.Description" class="form-control" placeholder="Describe the pet's activity level" readonly/>
                     <span asp-validation-for="Pet_Activity.Activity_Level.Description" class="text-danger"></span>
                 </div>
 
                 <div class="form-field checkbox-label">
-                    <input type="checkbox" id="Leash_Trained" name="Leash_Trained" value="true" checked />
+                    <input type="checkbox" id="Leash_Trained" name="Leash_Trained" value="true" checked disabled />
                     <input type="hidden" name="Leash_Trained" value="false" />
                     <label for="Leash_Trained">Is the pet leash trained?</label>
                 </div>
 
                 <div class="form-field checkbox-label">
-                    <input type="checkbox" id="Litter_Trained" name="Litter_Trained" value="true" checked />
+                    <input type="checkbox" id="Litter_Trained" name="Litter_Trained" value="true" checked disabled />
                     <input type="hidden" name="Litter_Trained" value="false" />
                     <label for="Litter_Trained">Is the pet litter trained?</label>
                 </div>
+                <div class=" form-group">
+                    <input type ="hidden" asp-for="Id"/>
+                <div class="confirm-button">
+                    <input type="submit" value="Confirm" class="btn btn-danger float-right mt-3" />
+                </div>
+                </div>
+
             </div>
-            <button type="submit" class="submit-button">Add Pet</button>
         </div>
     </form>
 </body>
-</html>

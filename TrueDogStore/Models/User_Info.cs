@@ -15,7 +15,7 @@ namespace TrueDogStore.Models
         public string? Phone { get; set; }
         [ForeignKey("Pet")]
         public int PetId { get; set; }
-        public List<Pet> OwnedPets { get; set; }
+        public ICollection<Pet> OwnedPets { get; set; }
         public string? Description { get; set; }
     }
 }

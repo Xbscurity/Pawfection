@@ -1,0 +1,248 @@
+﻿@using TrueDogStore.ViewModels;
+@model EditPetViewModel
+
+    
+    <head>
+        <title>Add New Pet</title>
+        <style>
+            /* Пример стилей для формы */
+            body {
+                font-family: Arial, sans-serif;
+            }
+
+            .form-container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                background-color: #f9f9f9;
+                display: flex; /* Делаем две колонки */
+                flex-wrap: wrap;
+            }
+
+            .form-column {
+                flex: 1;
+                padding: 10px;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            input[type="text"], select {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+            }
+
+            .checkbox-label {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+                .checkbox-label input[type="checkbox"] {
+                    margin-right: 10px;
+                    width: 20px;
+                    height: 20px;
+                    cursor: pointer;
+                }
+
+            .form-container {
+                /* ... (ваш стиль здесь) ... */
+                position: relative; /* Добавим позиционирование */
+            }
+
+            .submit-button {
+                padding: 15px 30px; /* Увеличим размер кнопки */
+                background-color: #4CAF50; /* Зеленый цвет */
+                color: white;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+                transition: background-color 0.3s ease; /* Плавное изменение цвета при наведении */
+                position: absolute; /* Позиционируем абсолютно */
+                bottom: 20px; /* Отступ снизу */
+                right: 20px; /* Отступ справа */
+            }
+
+                .submit-button:hover {
+                    background-color: #45a049; /* Темнее зеленый цвет при наведении */
+                }
+
+            #Pet_Friendly {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                background-color: #fff;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                margin-right: 10px;
+                cursor: pointer;
+                transition: background-color 0.3s ease, border-color 0.3s ease;
+            }
+
+                #Pet_Friendly:checked {
+                    background-color: #4CAF50;
+                    border-color: #4CAF50;
+                }
+
+                #Pet_Friendly:disabled {
+                    background-color: #ccc;
+                    border-color: #ccc;
+                    cursor: not-allowed;
+                }
+
+        </style>
+    </head>
+
+    <body>
+    <form method="post" asp-action="Edit" enctype="multipart/form-data">
+        <input type="hidden" value="ShelterId" id="ShelterId" />
+        <input type="hidden" value="Pet_ActivityId" id="Pet_ActivityId" />
+        <input type="hidden" value="SizeId" id="SizeId" />
+        <input type="hidden" value=" BreedId" id=" BreedId" />
+
+            <div class="form-container">
+                <div class="form-column">
+                    <div class="form-field">
+                        <label asp-for="Name">Name:</label>
+                        <input asp-for="Name" class="form-control" placeholder="What's the pet's name?" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Fur_Length">Fur Length:</label>
+                        <input asp-for="Fur_Length" class="form-control" placeholder="What's the length of the pet's fur?" />
+                        <span asp-validation-for="Fur_Length" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Color">Color:</label>
+                        <input asp-for="Color" class="form-control" placeholder="What's the pet's color?" />
+                        <span asp-validation-for="Color" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Weight">Weight:</label>
+                        <input asp-for="Weight" class="form-control" placeholder="How much does the pet weigh? (in pounds)" />
+                        <span asp-validation-for="Weight" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Age">Age:</label>
+                        <input asp-for="Age" class="form-control" placeholder="How old is the pet? (in years)" />
+                        <span asp-validation-for="Age" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Size.Description">Size Description:</label>
+                        <input asp-for="Size.Description" class="form-control" placeholder="Describe the pet's size" />
+                        <span asp-validation-for="Size.Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Gender">Gender:</label>
+                        <input asp-for="Gender" class="form-control" placeholder="What's the pet's gender?" />
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Shelter.Id">Select a Shelter:</label>
+                        <select asp-for="Shelter.Id" asp-items="@(new SelectList(ViewBag.Shelters, "Id", "Name"))" class="form-control">
+                        </select>
+                        <span asp-validation-for="Shelter.Id" class="text-danger"></span>
+                    </div>
+                    <div class="form-field">
+                        <label asp-for="ImagePath">Image Description:</label>
+                        <input asp-for="ImagePath" type="file" class="form-control" placeholder="pet's Image'" />
+                    <span asp-validation-for="ImagePath" class="text-danger"></span>
+                    </div>
+                    <div class="form-field checkbox-label">
+                        <input type="checkbox" id="Human_Friendly" name="Human_Friendly" value="true" checked />
+                        <input type="hidden" name="Human_Friendly" value="false" />
+                        <label for="Human_Friendly">Is the pet friendly with other animals?</label>
+                    </div>
+                    <div class="form-field checkbox-label">
+                        <input type="checkbox" id="Pet_Friendly" name="Pet_Friendly" value="true" checked />
+                        <input type="hidden" name="Pet_Friendly" value="false" />
+                        <label for="Pet_Friendly">Is the pet friendly with other animals?</label>
+                    </div>
+
+                    <div class="form-field checkbox-label">
+                        <input type="checkbox" id="Apartment_Friendly" name="Apartment_Friendly" value="true" checked />
+                        <input type="hidden" name="Apartment_Friendly" value="false" />
+                        <label for="Apartment_Friendly">Is the pet suitable for apartment living?</label>
+                    </div>
+                </div>
+
+                <div class="form-column">
+                    <div class="form-field">
+                        <label asp-for="Breed.Name">Breed Name:</label>
+                        <input asp-for="Breed.Name" class="form-control" placeholder="What's the pet's breed name?" />
+                        <span asp-validation-for="Breed.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Breed.Description">Breed Description:</label>
+                        <input asp-for="Breed.Description" class="form-control" placeholder="Describe the pet's breed" />
+                        <span asp-validation-for="Breed.Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Breed.Breed_Group.Name">Breed Group Name:</label>
+                        <input asp-for="Breed.Breed_Group.Name" class="form-control" placeholder="What's the pet's breed group name?" />
+                        <span asp-validation-for="Breed.Breed_Group.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Breed.Breed_Group.Description">Breed Group Description:</label>
+                        <input asp-for="Breed.Breed_Group.Description" class="form-control" placeholder="Describe the pet's breed group" />
+                        <span asp-validation-for="Breed.Breed_Group.Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Pet_Activity.Name">Pet Activity Name:</label>
+                        <input asp-for="Pet_Activity.Name" class="form-control" placeholder="What's the pet's activity name?" />
+                        <span asp-validation-for="Pet_Activity.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Pet_Activity.Description">Pet Activity Description:</label>
+                        <input asp-for="Pet_Activity.Description" class="form-control" placeholder="Describe the pet's activity" />
+                        <span asp-validation-for="Pet_Activity.Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Pet_Activity.Activity_Level.Name">Activity Level Name:</label>
+                        <input asp-for="Pet_Activity.Activity_Level.Name" class="form-control" placeholder="What's the pet's activity level name?" />
+                        <span asp-validation-for="Pet_Activity.Activity_Level.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label asp-for="Pet_Activity.Activity_Level.Description">Activity Level Description:</label>
+                        <input asp-for="Pet_Activity.Activity_Level.Description" class="form-control" placeholder="Describe the pet's activity level" />
+                        <span asp-validation-for="Pet_Activity.Activity_Level.Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-field checkbox-label">
+                        <input type="checkbox" id="Leash_Trained" name="Leash_Trained" value="true" checked />
+                        <input type="hidden" name="Leash_Trained" value="false" />
+                        <label for="Leash_Trained">Is the pet leash trained?</label>
+                    </div>
+
+                    <div class="form-field checkbox-label">
+                        <input type="checkbox" id="Litter_Trained" name="Litter_Trained" value="true" checked />
+                        <input type="hidden" name="Litter_Trained" value="false" />
+                        <label for="Litter_Trained">Is the pet litter trained?</label>
+                    </div>
+                </div>
+                <button type="submit" class="submit-button">Add Pet</button>
+            </div>
+        </form>
+    </body>

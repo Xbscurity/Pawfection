@@ -49,6 +49,17 @@ namespace TrueDogStore.Repository
                 .FirstOrDefaultAsync(i => i.Id == id);
 
         }
+        public async Task<Pet> GetByIdAsyncNoTracking(int id)
+        {
+            return await _context.Pets
+                .Include(i => i.Shelter)
+                .Include(i => i.Pet_Activity)
+                .ThenInclude(i => i.Activity_Level)
+                .Include(i => i.Size).Include(i => i.Breed)
+                .ThenInclude(i => i.Breed_Group).
+                AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+
+        }
 
         public async Task<IEnumerable<Pet>> GetPetByShelter(string adress)
         {
