@@ -4,15 +4,13 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TrueDogStore.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User>
+    public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         
         }
         public DbSet<Pet> Pets { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<User_Info> Users_Infos { get; set; }
         public DbSet<Breed> Breeds { get; set; }
         public DbSet<Breed_Group> BreedGroups { get; set; }
         public DbSet<Pet_Activity> PetActivities { get; set; }
