@@ -18,7 +18,7 @@
 <body>
 <div class="container mt-5">
     <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header bg-dark text-white">
             <h2 class="card-title">@Model?.Name</h2>
         </div>
         <div class="card-body">
@@ -96,12 +96,12 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <p><strong>Shelter:</strong> @Model.Shelter.Name</p>
-                    <p><strong>Address:</strong> @Model.Shelter.Address</p>
+                        <p><i class="bi bi-house"></i> @Model.Shelter.Name</p>
+                        <p><i class="bi bi-geo-alt"></i> @Model.Shelter.Address</p>
                 </div>
                 <div class="col-md-6">
-                    <p><strong>Phone:</strong> @Model.Shelter.Phone</p>
-                    <p><strong>Email:</strong> @Model.Shelter.Email</p>
+                        <p><i class="bi bi-telephone"></i> @Model.Shelter.Phone</p> <!-- Заменяем текст на иконку телефона -->
+                        <p><i class="bi bi-envelope"></i> @Model.Shelter.Email</p> <!-- Заменяем текст на иконку почты -->
                 </div>
             </div>
         </div>

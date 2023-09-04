@@ -81,10 +81,10 @@ namespace TrueDogStore.Controllers
                 await _userManager.AddToRoleAsync(newUser, UserRoles.User);
                 return RedirectToAction("Index", "Home");
             }
-            TempData["PasswordError"] = "This email address is already in use";
+            TempData["Error"] = "Сheck password restrictions";
             return View(registerViewModel);
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> Logout()
         {

@@ -5,21 +5,49 @@
     ViewData["Title"] = "Sign up";
 }
 
-<div class="row">
-    <div class="col-md-6 offset-3">
-        <p>
-            <h4>Sign up for a new account</h4>
-        </p>
+<style>
+    /* Стиль для подсвечивания правил красным */
+    .rule-valid {
+        color: green;
+        font-weight: bold;
+    }
+
+    .rule-invalid {
+        color: red;
+        font-weight: bold;
+    }
+
+</style>
+
 
         @if (TempData["Error"] != null)
         {
             <div class="col-md-12 alert alert-danger">
-                <span><b>Sorry!</b> - @TempData["Error"] </span>
+                <span><b>Sorry!</b> - @TempData["Error"]</span>
+
             </div>
         }
 
-        <div class="row">
-            <div class="col-md-8 offset-2">
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h4 class="text-center">Sign up for a new account</h4>
+                </div>
+                <div class="card-body">
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="col-md-12 alert alert-danger">
+                <span><b>Sorry!</b> - @TempData["Error"]</span>
+
+            </div>
+        }
+
+
                 <form asp-action="Register">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -28,23 +56,95 @@
                         <input asp-for="EmailAddress" class="form-control" />
                         <span asp-validation-for="EmailAddress" class="text-danger"></span>
                     </div>
+
+
                     <div class="form-group">
                         <label asp-for="Password" class="control-label"></label>
                         <input asp-for="Password" class="form-control" />
                         <span asp-validation-for="Password" class="text-danger"></span>
+                        <ul id="password-rules">
+                            <li id="rule-length" class="rule-invalid">At least 6 characters <span class="checkmark"></span></li>
+                            <li id="rule-lowercase" class="rule-invalid">At least 1 lowercase letter <span class="checkmark"></span></li>
+                            <li id="rule-uppercase" class="rule-invalid">At least 1 uppercase letter <span class="checkmark"></span></li>
+                            <li id="rule-nonalphanumeric" class="rule-invalid">At least 1 non-alphanumeric character <span class="checkmark"></span></li>
+                            <li id="rule-digit" class="rule-invalid">At least 1 digit <span class="checkmark"></span></li>
+                            <li id="rule-confirm" class="rule-invalid">Password matches confirmation <span class="checkmark"></span></li>
+                        </ul>
                     </div>
+
                     <div class="form-group">
                         <label asp-for="ConfirmPassword" class="control-label"></label>
                         <input asp-for="ConfirmPassword" class="form-control" />
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group">
-                        <input class="btn btn-outline-success float-right" type="submit" value="Sign up" />
-                        <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Cancel</a>
-                    </div>
+                        <div class="form-group text-center">
+                            <button class="btn btn-success" type="submit" style="margin-right: 15px;">Sign up</button>
+                            <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Cancel</a>
+                        </div>
                 </form>
             </div>
         </div>
+        </div>
     </div>
 </div>
+
+@section scripts{
+<!-- Скрипт для проверки и подсветки правил пароля -->
+<script>
+    $(document).ready(function () {
+        $('#Password').keyup(function () {
+            var password = $(this).val();
+            checkPassword(password);
+                checkConfirmPassword($('#ConfirmPassword').val(), password);
+        });
+
+        $('#ConfirmPassword').keyup(function () {
+            var confirmPassword = $(this).val();
+            var password = $('#Password').val();
+            checkConfirmPassword(confirmPassword, password);
+        });
+    });
+
+    function checkPassword(password) {
+        var rules = {
+            length: password.length >= 6,
+            lowercase: /[a-z]/.test(password),
+            uppercase: /[A-Z]/.test(password),
+            nonalphanumeric: /[^\w\s]/.test(password),
+            digit: /\d/.test(password)
+        };
+
+        // Обновление стилей для элементов списка правил
+        updateRuleStyle('rule-length', rules.length);
+        updateRuleStyle('rule-lowercase', rules.lowercase);
+        updateRuleStyle('rule-uppercase', rules.uppercase);
+        updateRuleStyle('rule-nonalphanumeric', rules.nonalphanumeric);
+        updateRuleStyle('rule-digit', rules.digit);
+    }
+
+    function checkConfirmPassword(confirmPassword, password) {
+        var isMatching = confirmPassword === password;
+
+        // Обновление стиля для элемента списка правила
+        updateRuleStyle('rule-confirm', isMatching);
+    }
+
+    // Функция для обновления стиля элемента списка правила
+    function updateRuleStyle(ruleId, isViolated) {
+        var $ruleElement = $('#' + ruleId);
+            if (isViolated) {
+                $ruleElement.removeClass('rule-invalid');
+                $ruleElement.addClass('rule-valid');
+            } else {
+                $ruleElement.removeClass('rule-valid');
+                $ruleElement.addClass('rule-invalid');
+            }
+    }
+    
+
+
+</script>
+
+
+        }
