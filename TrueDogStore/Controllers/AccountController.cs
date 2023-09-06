@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TrueDogStore.Data;
+using TrueDogStore.Interfaces;
 using TrueDogStore.Models;
 using TrueDogStore.ViewModels;
 
@@ -10,14 +12,27 @@ namespace TrueDogStore.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly ApplicationDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IPhotoService _photoService;
+        private readonly IAccountRepository _accountRepository;
         public AccountController(UserManager<AppUser> userManager, 
-            SignInManager<AppUser> signInManager, ApplicationDbContext context)
+            SignInManager<AppUser> signInManager, IHttpContextAccessor httpContextAccessor,
+            IPhotoService photoService, IAccountRepository accountRepository)
         {
-            _context = context;
             _signInManager = signInManager;
             _userManager = userManager;
-
+            _httpContextAccessor = httpContextAccessor;
+            _photoService = photoService;
+            _accountRepository = accountRepository;
+    }
+        private void MapUserEdit(AppUser user, EditAccountUserViewModel editAVM, ImageUploadResult photoResult)
+        {
+            user.Id = editAVM.Id;
+            user.UserName = editAVM.UserName;
+            user.Description = editAVM.Description;
+            user.Image = photoResult.Url.ToString();
+            user.Country = editAVM.Country;
+           
         }
         [HttpGet]
         public IActionResult Login()
@@ -79,13 +94,61 @@ namespace TrueDogStore.Controllers
             if (newUserResponse.Succeeded)
             {
                 await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+                await _signInManager.PasswordSignInAsync(newUser, registerViewModel.Password, false, false);
                 return RedirectToAction("Index", "Home");
             }
             TempData["Error"] = "Сheck password restrictions";
             return View(registerViewModel);
         }
-        
+        public async Task<IActionResult> EditUserProfile()
+        {    
+          var curUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var user = await _accountRepository.GetUserByIdAsync(curUserId);
+            if (user == null) return View("Error");
+            var editAccountUserViewModel = new EditAccountUserViewModel()
+            {
+                Id = curUserId,
+                UserName = user.UserName,
+                Description = user.Description,
+                Country = user.Country,
+                ProfileImageUrl = user.Image,
+            };
+          return View(editAccountUserViewModel);
+        }
         [HttpPost]
+        public async Task<IActionResult> EditUserProfile(EditAccountUserViewModel editAVM)
+        {
+            if (!ModelState.IsValid)
+            {   
+                ModelState.AddModelError("", "Failed to edit profile");
+                return View("EditUserProfile", editAVM);
+            }
+            var user = await _accountRepository.GetUserByIdAsyncNoTracking(editAVM.Id);
+            if (user.Image == string.Empty || user.Image == null)
+            {
+             var photoResult = await _photoService.AddPhotoAsync(editAVM.Image);
+                MapUserEdit(user, editAVM, photoResult);
+                _accountRepository.Update(user);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                try 
+                {
+                    var fi = new FileInfo(user.Image);
+                    var publicId = Path.GetFileNameWithoutExtension(fi.Name);
+                    await _photoService.DeletePhotoAsync(publicId);
+                }catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Could not delete photo");
+                    return View(editAVM);
+                }
+                var photoResult = await _photoService.AddPhotoAsync(editAVM.Image);
+                MapUserEdit(user, editAVM, photoResult);
+                _accountRepository.Update(user);
+                return RedirectToAction("Index", "Home");
+            }
+        }
         public async Task<IActionResult> Logout()
         {
         await _signInManager.SignOutAsync();

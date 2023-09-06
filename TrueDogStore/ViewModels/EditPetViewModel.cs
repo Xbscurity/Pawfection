@@ -33,5 +33,6 @@ namespace TrueDogStore.ViewModels
             public bool? Apartment_Friendly { get; set; }
             public bool? Leash_Trained { get; set; }
             public bool? Litter_Trained { get; set; }
+            public string? AppUserId { get; set; }
     }
 }

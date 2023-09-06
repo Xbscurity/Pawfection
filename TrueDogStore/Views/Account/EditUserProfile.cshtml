@@ -1,0 +1,34 @@
+﻿@using TrueDogStore.ViewModels;
+@model EditAccountUserViewModel
+@{
+    ViewData["Title"] = "Edit profile";
+}
+
+<body>
+    <div class="form-container">
+    <form method="post" asp-action="EditUserProfile" enctype="multipart/form-data">
+            <input type="hidden" id="Id" name="Id" asp-for="Id" />
+            <div class="form-field">
+                <label asp-for="UserName">UserName:</label>
+                <input asp-for="UserName" class="form-control" placeholder="What will be your Username?" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="Image">Profile Image</label>
+                <input asp-for="Image" type="file" class="form-control" placeholder="Image">
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="Description">Description:</label>
+                <input asp-for="Description" class="form-control" placeholder="Tell us about yourself" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="Country">Country:</label>
+                <input asp-for="Country" class="form-control" placeholder="Your country" />
+                <span asp-validation-for="Country" class="text-danger"></span>
+                <button type="submit" class="submit-button">Edit profile</button>
+            </div>
+        </form>
+</div>
+        </body>

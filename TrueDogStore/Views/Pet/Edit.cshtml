@@ -1,11 +1,13 @@
 ﻿@using TrueDogStore.ViewModels;
 @model EditPetViewModel
+@{
+    ViewData["Title"] = "Edit Pets";
+}
 
-    
+    <html>
     <head>
-        <title>Add New Pet</title>
         <style>
-            /* Пример стилей для формы */
+        
             body {
                 font-family: Arial, sans-serif;
             }
@@ -17,7 +19,7 @@
                 border: 1px solid #ccc;
                 border-radius: 5px;
                 background-color: #f9f9f9;
-                display: flex; /* Делаем две колонки */
+                display: flex;
                 flex-wrap: wrap;
             }
 
@@ -53,50 +55,28 @@
                     cursor: pointer;
                 }
 
-            .form-container {
-                /* ... (ваш стиль здесь) ... */
-                position: relative; /* Добавим позиционирование */
+            .form-container {            
+                position: relative; 
             }
 
             .submit-button {
-                padding: 15px 30px; /* Увеличим размер кнопки */
-                background-color: #4CAF50; /* Зеленый цвет */
+                padding: 15px 30px; 
+                background-color: #4CAF50; 
                 color: white;
                 border: none;
                 border-radius: 3px;
                 cursor: pointer;
-                transition: background-color 0.3s ease; /* Плавное изменение цвета при наведении */
-                position: absolute; /* Позиционируем абсолютно */
-                bottom: 20px; /* Отступ снизу */
-                right: 20px; /* Отступ справа */
+                transition: background-color 0.3s ease; 
+                position: absolute; 
+                bottom: 20px; 
+                right: 20px; 
             }
 
                 .submit-button:hover {
-                    background-color: #45a049; /* Темнее зеленый цвет при наведении */
+                    background-color: #45a049;
                 }
 
-            #Pet_Friendly {
-                display: inline-block;
-                width: 20px;
-                height: 20px;
-                background-color: #fff;
-                border: 1px solid #ccc;
-                border-radius: 3px;
-                margin-right: 10px;
-                cursor: pointer;
-                transition: background-color 0.3s ease, border-color 0.3s ease;
-            }
-
-                #Pet_Friendly:checked {
-                    background-color: #4CAF50;
-                    border-color: #4CAF50;
-                }
-
-                #Pet_Friendly:disabled {
-                    background-color: #ccc;
-                    border-color: #ccc;
-                    cursor: not-allowed;
-                }
+ 
 
         </style>
     </head>
@@ -246,3 +226,4 @@
             </div>
         </form>
     </body>
+</html>

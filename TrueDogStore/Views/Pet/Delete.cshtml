@@ -1,11 +1,13 @@
 ﻿@using TrueDogStore.ViewModels;
 @model Pet
+@{
+    ViewData["Title"] = "Delete Pets";
+}
 
 
 <head>
-    <title>Add New Pet</title>
     <style>
-        /* Пример стилей для формы */
+      
         body {
             font-family: Arial, sans-serif;
         }
@@ -17,7 +19,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #f9f9f9;
-            display: flex; /* Делаем две колонки */
+            display: flex; 
             flex-wrap: wrap;
         }
 
@@ -55,21 +57,21 @@
             }
 
         .form-container {
-            /* ... (ваш стиль здесь) ... */
-            position: relative; /* Добавим позиционирование */
+            
+            position: relative; 
         }
 
         .submit-button {
-            padding: 15px 30px; /* Увеличим размер кнопки */
-            background-color: #4CAF50; /* Зеленый цвет */
+            padding: 15px 30px; 
+            background-color: #4CAF50; 
             color: white;
             border: none;
             border-radius: 3px;
             cursor: pointer;
-            transition: background-color 0.3s ease; /* Плавное изменение цвета при наведении */
-            position: absolute; /* Позиционируем абсолютно */
-            bottom: 20px; /* Отступ снизу */
-            right: 20px; /* Отступ справа */
+            transition: background-color 0.3s ease;
+            position: absolute; 
+            bottom: 20px; 
+            right: 20px; 
         }
         .confirm-button {                      
             transition: background-color 0.3s ease;
@@ -82,7 +84,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px; /* Add some space between the heading and the form */
+            margin-bottom: 20px;
         }
     </style>
 </head>

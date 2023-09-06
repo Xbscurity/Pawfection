@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 
@@ -32,6 +33,9 @@ namespace TrueDogStore.Models
         public bool? Apartment_Friendly { get; set; }
         public bool? Leash_Trained { get; set; }
         public bool? Litter_Trained { get; set; }
+        [ForeignKey("AppUser")]
+        public string? AppUserId { get; set; }
+        public AppUser? appUser { get; set; }
 
     }
 }

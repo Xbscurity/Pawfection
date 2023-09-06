@@ -6,7 +6,6 @@
 }
 
 <style>
-    /* Стиль для подсвечивания правил красным */
     .rule-valid {
         color: green;
         font-weight: bold;
@@ -18,8 +17,6 @@
     }
 
 </style>
-
-
         @if (TempData["Error"] != null)
         {
             <div class="col-md-12 alert alert-danger">
@@ -27,9 +24,6 @@
 
             </div>
         }
-
-
-
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -46,8 +40,6 @@
 
             </div>
         }
-
-
                 <form asp-action="Register">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -56,8 +48,6 @@
                         <input asp-for="EmailAddress" class="form-control" />
                         <span asp-validation-for="EmailAddress" class="text-danger"></span>
                     </div>
-
-
                     <div class="form-group">
                         <label asp-for="Password" class="control-label"></label>
                         <input asp-for="Password" class="form-control" />
@@ -90,7 +80,6 @@
 </div>
 
 @section scripts{
-<!-- Скрипт для проверки и подсветки правил пароля -->
 <script>
     $(document).ready(function () {
         $('#Password').keyup(function () {
@@ -98,14 +87,12 @@
             checkPassword(password);
                 checkConfirmPassword($('#ConfirmPassword').val(), password);
         });
-
         $('#ConfirmPassword').keyup(function () {
             var confirmPassword = $(this).val();
             var password = $('#Password').val();
             checkConfirmPassword(confirmPassword, password);
         });
     });
-
     function checkPassword(password) {
         var rules = {
             length: password.length >= 6,
@@ -113,9 +100,7 @@
             uppercase: /[A-Z]/.test(password),
             nonalphanumeric: /[^\w\s]/.test(password),
             digit: /\d/.test(password)
-        };
-
-        // Обновление стилей для элементов списка правил
+        };     
         updateRuleStyle('rule-length', rules.length);
         updateRuleStyle('rule-lowercase', rules.lowercase);
         updateRuleStyle('rule-uppercase', rules.uppercase);
@@ -124,13 +109,9 @@
     }
 
     function checkConfirmPassword(confirmPassword, password) {
-        var isMatching = confirmPassword === password;
-
-        // Обновление стиля для элемента списка правила
+        var isMatching = confirmPassword === password;       
         updateRuleStyle('rule-confirm', isMatching);
-    }
-
-    // Функция для обновления стиля элемента списка правила
+    } 
     function updateRuleStyle(ruleId, isViolated) {
         var $ruleElement = $('#' + ruleId);
             if (isViolated) {

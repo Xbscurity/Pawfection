@@ -1,6 +1,77 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<h1>hi</h1>
+﻿@model IEnumerable<Pet>
+<style>
+   
+    .dog-image {
+        width: 100%;
+        max-height: 300px;
+        object-fit: cover;
+    }
+
+
+    .btn-group {
+        margin-top: 10px;
+    }
+
+    .btn-add-pet{
+        background-color: #007bff; 
+        color: #fff; 
+        font-size: 16px;
+        border: 2px solid #007bff; 
+        border-radius: 5px;
+        padding: 10px 20px;
+        transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+        .btn-add-pet:hover {
+            background-color: #0056b3;
+            border-color: #0056b3; 
+        }
+
+</style>
+
+<div class="container">
+    <h1 class="display-5 fw-normal">User Dashboard</h1>
+    <a type="button" class="btn btn-add-pet" asp-area="" asp-controller="Pet" asp-action="Create">Add Your Pets</a>
+
+    <div class="album py-5 bg-light">
+        <h2 class="display-6 fw-normal">Your Pets</h2>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            @foreach (var pet in Model)
+            {
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            @if (pet != null)
+                            {
+                                <h5 class="card-title">@pet.Breed.Name</h5>
+                                <p class="card-text">@pet.Shelter.Name</p>
+                                <div>
+                                    @if (!string.IsNullOrEmpty(pet.ImagePath))
+                                    {
+                                        <img src="@pet.ImagePath" alt="Dog Image" class="img-fluid dog-image">
+                                    }
+                                    else
+                                    {
+                                        <p>No image available</p>
+                                    }
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <div class="btn-group">
+                                        <a class="btn btn-sm btn-outline-primary" asp-controller="Pet" asp-action="Detail" asp-route-id="@pet.Id">View</a>
+                                        <a asp-controller="Pet" asp-action="Edit" asp-route-id="@pet.Id" class="btn btn-sm btn-outline-success">Edit</a>
+                                        <a asp-controller="Pet" asp-action="Delete" asp-route-id="@pet.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                                    </div>
+                                    <small class="text-muted">@pet.Breed.Breed_Group.Name</small>
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="card-text">No pet information available</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

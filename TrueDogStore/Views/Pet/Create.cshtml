@@ -1,12 +1,14 @@
 ﻿@using TrueDogStore.ViewModels
 @model CreatePetViewModel
+@{
+    ViewData["Title"] = "Create Pets";
+}
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add New Pet</title>
     <style>
-        /* Пример стилей для формы */
+        
         body {
             font-family: Arial, sans-serif;
         }
@@ -18,7 +20,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #f9f9f9;
-            display: flex; /* Делаем две колонки */
+            display: flex; 
             flex-wrap: wrap;
         }
 
@@ -55,25 +57,25 @@
             }
 
         .form-container {
-            /* ... (ваш стиль здесь) ... */
-            position: relative; /* Добавим позиционирование */
+            
+            position: relative; 
         }
 
         .submit-button {
-            padding: 15px 30px; /* Увеличим размер кнопки */
-            background-color: #4CAF50; /* Зеленый цвет */
+            padding: 15px 30px; 
+            background-color: #4CAF50; 
             color: white;
             border: none;
             border-radius: 3px;
             cursor: pointer;
-            transition: background-color 0.3s ease; /* Плавное изменение цвета при наведении */
-            position: absolute; /* Позиционируем абсолютно */
-            bottom: 20px; /* Отступ снизу */
-            right: 20px; /* Отступ справа */
+            transition: background-color 0.3s ease;
+            position: absolute;
+            bottom: 20px; 
+            right: 20px; 
         }
 
             .submit-button:hover {
-                background-color: #45a049; /* Темнее зеленый цвет при наведении */
+                background-color: #45a049;
             }
 
         #Pet_Friendly {
@@ -103,7 +105,7 @@
 </head>
 <body>
     <form asp-action="Create" method="post" enctype="multipart/form-data">
-
+        <input type ="hidden" id="AppUserId" name="AppUserId" asp-for = "AppUserId"/> 
         <div class="form-container">
             <div class="form-column">
                 <div class="form-field">

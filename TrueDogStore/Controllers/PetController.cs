@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using TrueDogStore.Data;
 using TrueDogStore.Interfaces;
 using TrueDogStore.Models;
+using TrueDogStore.Repository;
 using TrueDogStore.ViewModels;
 
 namespace TrueDogStore.Controllers
@@ -13,16 +14,21 @@ namespace TrueDogStore.Controllers
     {
         private readonly IPetRepository _petRepository;
         private readonly ILogger<Pet> _logger;
-        private readonly ApplicationDbContext _context;
         private readonly IPhotoService _photoService;
+        private readonly IShelterRepository _shelterRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+
 
         public PetController(IPetRepository petRepository, ILogger<Pet> logger,
-            ApplicationDbContext context, IPhotoService photoService)
+            IPhotoService photoService, IShelterRepository ShelterRepository,
+            IHttpContextAccessor httpContextAccessor)
         {
             _petRepository = petRepository;
-            _logger = logger;
-            _context = context;
+            _logger = logger;         
             _photoService = photoService;
+            _shelterRepository = ShelterRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<IActionResult> Index()
         {
@@ -38,11 +44,13 @@ namespace TrueDogStore.Controllers
             }
             return View(pet);
         }
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var shelters = _context.Shelters.ToList(); 
+            var curUserId = _httpContextAccessor.HttpContext.User.GetUserId();    
+            var createPetViewModel = new CreatePetViewModel{ AppUserId =  curUserId };
+            var shelters = await _shelterRepository.GetAll(); 
             ViewBag.Shelters = shelters;
-            return View();
+            return View(createPetViewModel);
         }
         [HttpPost]
         public async Task<IActionResult> Create(CreatePetViewModel petVM)
@@ -50,7 +58,7 @@ namespace TrueDogStore.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _photoService.AddPhotoAsync(petVM.ImagePath);
-                var shelter = _context.Shelters.FirstOrDefault(s => s.Id == petVM.Shelter.Id);
+                var shelter = await _shelterRepository.GetByIdAsync(petVM.Shelter.Id);
 
                 if (shelter != null)
                 {
@@ -59,6 +67,7 @@ namespace TrueDogStore.Controllers
                 }
                 var pet = new Pet
                 {
+                    AppUserId = petVM.AppUserId,
                     Size = new Size
                     {                       
                     Description = petVM.Size.Description
@@ -110,7 +119,7 @@ namespace TrueDogStore.Controllers
         }
         public async Task<IActionResult> Edit(int id)
         {
-			var shelters = _context.Shelters.ToList();
+			var shelters = await _shelterRepository.GetAll();
 			ViewBag.Shelters = shelters;
 			var pet = await _petRepository.GetByIdAsync(id);
             if (pet == null)
@@ -152,7 +161,7 @@ namespace TrueDogStore.Controllers
                 ModelState.AddModelError("", "Failed to edit pet");
                 return View("Edit", petVM);
             }
-            var shelter = _context.Shelters.FirstOrDefault(s => s.Id == petVM.Shelter.Id);
+            var shelter = await _shelterRepository.GetByIdAsync(petVM.Shelter.Id);
             var userPet = await _petRepository.GetByIdAsyncNoTracking(id);
             if (userPet != null)
             {
@@ -160,7 +169,7 @@ namespace TrueDogStore.Controllers
                 {
                     if (petVM.ImagePath != null)
                     {
-                        // Удалить старую фотографию только если загружается новая
+                       
                         var fi = new FileInfo(userPet.ImagePath);
                         var publicId = Path.GetFileNameWithoutExtension(fi.Name);
                         await _photoService.DeletePhotoAsync(publicId);
@@ -183,7 +192,14 @@ namespace TrueDogStore.Controllers
                     Id = id,
                     SizeId = petVM.SizeId,
                     Size = petVM.Size,
-                    Shelter = shelter,
+                    Shelter = new Shelter
+                    {
+                    Id = shelter.Id,
+                    Address = shelter.Address,
+                    Name = shelter.Name,
+                    Email = shelter.Email,
+                    Phone = shelter.Phone,
+                    },
                     Pet_ActivityId = petVM.Pet_ActivityId,
                     Pet_Activity = petVM.Pet_Activity,
                     BreedId = petVM.BreedId,
