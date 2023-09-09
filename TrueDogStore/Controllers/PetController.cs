@@ -117,11 +117,15 @@ namespace TrueDogStore.Controllers
             }
             return View(petVM); 
         }
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-			var shelters = await _shelterRepository.GetAll();
+            if (id == null)
+            {              
+                return NotFound(); 
+            }
+            var shelters = await _shelterRepository.GetAll();
 			ViewBag.Shelters = shelters;
-			var pet = await _petRepository.GetByIdAsync(id);
+			var pet = await _petRepository.GetByIdAsync((int)id);
             if (pet == null)
             {
                 return View("Error");
@@ -161,7 +165,7 @@ namespace TrueDogStore.Controllers
                 ModelState.AddModelError("", "Failed to edit pet");
                 return View("Edit", petVM);
             }
-            var shelter = await _shelterRepository.GetByIdAsync(petVM.Shelter.Id);
+            var shelter = await _shelterRepository.GetByIdAsyncNoTracking(petVM.Shelter.Id);
             var userPet = await _petRepository.GetByIdAsyncNoTracking(id);
             if (userPet != null)
             {

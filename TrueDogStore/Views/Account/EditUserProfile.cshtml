@@ -4,12 +4,65 @@
     ViewData["Title"] = "Edit profile";
 }
 
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-field {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .text-danger {
+            color: #ff0000;
+        }
+
+        .submit-button {  
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .submit-button:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+
 <body>
     <div class="form-container">
-    <form method="post" asp-action="EditUserProfile" enctype="multipart/form-data">
+        <form method="post" asp-action="EditUserProfile" enctype="multipart/form-data">
             <input type="hidden" id="Id" name="Id" asp-for="Id" />
             <div class="form-field">
-                <label asp-for="UserName">UserName:</label>
+                <label asp-for="UserName">Username:</label>
                 <input asp-for="UserName" class="form-control" placeholder="What will be your Username?" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
@@ -27,8 +80,8 @@
                 <label asp-for="Country">Country:</label>
                 <input asp-for="Country" class="form-control" placeholder="Your country" />
                 <span asp-validation-for="Country" class="text-danger"></span>
-                <button type="submit" class="submit-button">Edit profile</button>
+                <button type="submit" class="submit-button ">Edit profile</button>
             </div>
         </form>
-</div>
-        </body>
+    </div>
+</body>

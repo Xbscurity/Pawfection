@@ -17,6 +17,10 @@ namespace TrueDogStore.Repository
         {
             return await _context.Shelters.FirstOrDefaultAsync(i => i.Id == id);
         }
+        public async Task<Shelter> GetByIdAsyncNoTracking(int id)
+        {
+            return await _context.Shelters.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+        }
         public async Task<List<Shelter>> GetAll()
         {
             return await _context.Shelters.ToListAsync();

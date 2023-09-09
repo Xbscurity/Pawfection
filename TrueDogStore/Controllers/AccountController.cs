@@ -17,7 +17,8 @@ namespace TrueDogStore.Controllers
         private readonly IAccountRepository _accountRepository;
         public AccountController(UserManager<AppUser> userManager, 
             SignInManager<AppUser> signInManager, IHttpContextAccessor httpContextAccessor,
-            IPhotoService photoService, IAccountRepository accountRepository)
+            IPhotoService photoService, IAccountRepository accountRepository
+            )
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -25,12 +26,15 @@ namespace TrueDogStore.Controllers
             _photoService = photoService;
             _accountRepository = accountRepository;
     }
-        private void MapUserEdit(AppUser user, EditAccountUserViewModel editAVM, ImageUploadResult photoResult)
+        private void MapUserEdit(AppUser user, EditAccountUserViewModel editAVM, ImageUploadResult? photoResult)
         {
             user.Id = editAVM.Id;
             user.UserName = editAVM.UserName;
             user.Description = editAVM.Description;
-            user.Image = photoResult.Url.ToString();
+            if (photoResult != null)
+            {
+                user.Image = photoResult.Url.ToString();
+            }
             user.Country = editAVM.Country;
            
         }
@@ -124,35 +128,58 @@ namespace TrueDogStore.Controllers
                 return View("EditUserProfile", editAVM);
             }
             var user = await _accountRepository.GetUserByIdAsyncNoTracking(editAVM.Id);
-            if (user.Image == string.Empty || user.Image == null)
+                ImageUploadResult? photoResult = null;
+            if (editAVM.Image != null)
             {
-             var photoResult = await _photoService.AddPhotoAsync(editAVM.Image);
-                MapUserEdit(user, editAVM, photoResult);
-                _accountRepository.Update(user);
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                try 
+                if (string.IsNullOrEmpty(user.Image))
                 {
-                    var fi = new FileInfo(user.Image);
-                    var publicId = Path.GetFileNameWithoutExtension(fi.Name);
-                    await _photoService.DeletePhotoAsync(publicId);
-                }catch (Exception ex)
-                {
-                    ModelState.AddModelError("", "Could not delete photo");
-                    return View(editAVM);
+
+                    photoResult = await _photoService.AddPhotoAsync(editAVM.Image);
+
+                    MapUserEdit(user, editAVM, photoResult);
+
+                    _accountRepository.Update(user);
+                    return RedirectToAction("Index");
                 }
-                var photoResult = await _photoService.AddPhotoAsync(editAVM.Image);
-                MapUserEdit(user, editAVM, photoResult);
-                _accountRepository.Update(user);
-                return RedirectToAction("Index", "Home");
+                else
+                {
+                    try
+                    {
+                        var fi = new FileInfo(user.Image);
+                        var publicId = Path.GetFileNameWithoutExtension(fi.Name);
+                        await _photoService.DeletePhotoAsync(publicId);
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("", "Could not delete photo");
+                        return View(editAVM);
+                    }
+                    photoResult = await _photoService.AddPhotoAsync(editAVM.Image);
+                }
             }
+                    MapUserEdit(user, editAVM, photoResult);
+                    _accountRepository.Update(user);
+                    return RedirectToAction("DetailUserProfile");         
         }
         public async Task<IActionResult> Logout()
         {
         await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+        public async Task<ActionResult> DetailUserProfile()
+        {
+            var curUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var user = await _accountRepository.GetUserByIdAsync(curUserId);
+            if (user == null) return View("Error");
+            var detailAccountUserViewModel = new DetailAccountUserViewModel()
+            {
+                Id = curUserId,
+                UserName = user.UserName,
+                Description = user.Description,
+                Country = user.Country,
+                ProfileImageUrl = user.Image,
+            };
+            return View(detailAccountUserViewModel);
         }
     }
 }
