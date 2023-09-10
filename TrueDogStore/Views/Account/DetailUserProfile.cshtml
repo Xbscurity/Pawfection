@@ -74,7 +74,13 @@
 </head>
 <body>
     <div class="profile-container">
-        <img class="profile-image" src="@Model.ProfileImageUrl" alt="@Model.UserName's Profile Picture">
+        @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+        {
+            <img class="profile-image" src="@Model.ProfileImageUrl" alt="@Model.UserName's Profile Picture">
+        }else
+        {
+           <img class="profile-image" src="~/images/default-user-account-photo.jpg" alt="User Photo">
+        }
         <div class="profile-info">
             <h1>@Model.UserName</h1>
             <p>@Model.Description</p>

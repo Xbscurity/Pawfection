@@ -9,7 +9,8 @@ namespace TrueDogStore.Repository
     {
         private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public AccountRepository(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public AccountRepository(ApplicationDbContext context
+            ,IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
             _context = context;
@@ -21,7 +22,10 @@ namespace TrueDogStore.Repository
         }
         public async Task<AppUser> GetUserByIdAsyncNoTracking(string id)
         {
-            return await _context.Users.Where(u => u.Id == id).AsNoTracking().FirstOrDefaultAsync();
+            return await _context.Users
+                .Where(u => u.Id == id)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
         public bool Update(AppUser user)
         {
