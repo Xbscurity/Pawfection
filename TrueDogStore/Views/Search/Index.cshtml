@@ -1,17 +1,143 @@
-﻿@model List<Pet>
-
-<h1>Search Results</h1>
-
-@if (Model.Count == 0)
-{
-    <p>No results found.</p>
+﻿@using TrueDogStore.ViewModels
+@model IEnumerable<SearchResultViewModel>
+@{ViewData["Title"] = "Search";
 }
-else
-{
-    <ul>
-        @foreach (var pet in Model)
-        {
-            <li>@pet.Name (Breed: @pet.Breed.Name)</li>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
         }
-    </ul>
-}
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .pet-card {
+            display: flex;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            background-color: #fff;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .pet-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            }
+
+        .pet-image {
+            max-width: 150px;
+            margin-right: 10px;
+        }
+
+        .pet-details {
+            flex: 1;
+            padding: 10px;
+        }
+
+        p {
+            font-size: 1em;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Стили для кнопок */
+        .pet-buttons {
+            margin-top: auto; /* Переместить кнопки вниз (в конец контейнера) */
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+
+            .no-results p {
+                font-size: 1.2em;
+                color: #555;
+            }
+
+
+        .result-wrapper {
+            background-color: #f9f9f9; /* Цвет фона */
+            padding: 20px; /* Отступы вокруг содержимого */
+            border-radius: 10px; /* Закругленные углы */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень */
+            margin-top: 20px; /* Отступ сверху */
+        }
+
+
+        .no-info-message {
+            text-align: center;
+            font-size: 1.2em;
+            color: #999;
+            padding: 20px;
+        }
+
+        .btn-outline-primary {
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .btn-outline-success {
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .btn-outline-danger {
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #333; 
+            text-align: center; 
+            padding: 20px 0; 
+
+        }
+    </style>
+    </head>
+    <body>
+        <div class="result-wrapper">
+            @if (Model.Count() == 0)
+            {
+                <p class="no-info-message">No information found</p>
+            }
+            else
+            {
+                <h1>Search result</h1>
+            }
+            @foreach (var result in Model)
+            {
+                <div class="container mt-3 latest-div">
+                    <div class="pet-card">
+                        <img class="pet-image" src="@result.ImagePath" alt="Pet Image" />
+                        <div class="pet-details">
+                            <h2>@result.Breed?.Name</h2>
+                            <p>@result.Shelter?.Name</p>
+                        </div>
+                        <div class="pet-buttons">
+                            <a class="btn btn-outline-primary" asp-controller="Pet" asp-action="Detail" asp-route-id="@result.Id">View</a>
+                            @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                            {
+                                <a asp-controller="Pet" asp-action="Edit" asp-route-id="@result.Id" class="btn btn-outline-success">Edit</a>
+                                <a asp-controller="Pet" asp-action="Delete" asp-route-id="@result.Id" class="btn btn-outline-danger">Delete</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </body>
+</html>

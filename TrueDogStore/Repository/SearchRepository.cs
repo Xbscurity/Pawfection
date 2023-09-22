@@ -13,9 +13,11 @@ namespace TrueDogStore.Repository
             _context = context;
         }
         public async Task<List<Pet>> SearchBreeds(string searchTerm)
-        { 
-            
-            return await _context.Pets.Include(p => p.Breed)
+        {
+
+            return await _context.Pets
+                .Include(p => p.Breed)
+                .Include(p => p.Shelter)
                 .Where(p => p.Breed != null && p.Breed.Name
                 .Contains(searchTerm.Trim()))
                 .ToListAsync();

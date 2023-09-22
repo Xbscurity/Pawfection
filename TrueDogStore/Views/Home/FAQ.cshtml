@@ -1,17 +1,50 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "FAQ";
 }
 <style>
-    .accordion-body {
-        background-color: #f5f5f5;
-        padding: 10px;
-        border: 1px solid #ddd;
+    .accordion-item {
+        background: rgba(255, 255, 255, 0.3); 
+        border: none;
+        border-radius: 10px;
+        margin: 10px 0;
+        backdrop-filter: blur(10px); 
+        color: azure;
+        font-size: 19px;
     }
-</style>
-<div class="container mt-5">
-    <h2>Frequently Asked Questions</h2>
 
-    <div class="accordion" id="faqAccordion">
+
+
+    .accordion-body { 
+        border: none;
+        border-radius: 10px;    
+    }
+
+    .accordion-button {
+        background: rgba(0, 0, 0, 0.2);
+        border: none;
+        border-radius: 10px;
+        color:azure;
+        font-size:20px;
+    }
+    body {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url('/images/petBg.jpg');
+        background-size: cover;
+        background-repeat:no-repeat;
+    }
+
+    .transparent-card{
+        background: transparent;
+        border: 2px solid rgba(255,255,255,.5);
+        border-radius: 20px;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 0 30px rgba(0,0,0,.5)
+    }
+    
+</style>
+<div class="container mt-5 ">
+    <div class="accordion " id="faqAccordion">
+        <h1 class="text-center mb-4" style="color: #fff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Frequently Asked Questions</h1>
         <div class="accordion-item">
             <h3 class="accordion-header" id="questionHeading1">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseQuestion1" aria-expanded="true" aria-controls="collapseQuestion1">

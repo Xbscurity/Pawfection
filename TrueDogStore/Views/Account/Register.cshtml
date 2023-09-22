@@ -6,79 +6,194 @@
 }
 
 <style>
-    .rule-valid {
-        color: green;
-        font-weight: bold;
+        input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus {
+        transition: background-color 5000s ease-in-out 0s;
+        -webkit-text-fill-color: white;
     }
 
     .rule-invalid {
-        color: red;
+        color: #9b1201; /* Темно-красный цвет текста */
         font-weight: bold;
     }
 
-</style>
-        @if (TempData["Error"] != null)
-        {
-            <div class="col-md-12 alert alert-danger">
-                <span><b>Sorry!</b> - @TempData["Error"]</span>
+    body {
+        background-image:  url('/images/registerBg.jpg');
+        background-size: cover; 
+        background-repeat: no-repeat; 
+       
+    }
 
-            </div>
+    .transparent-card {
+        background:transparent;
+        border:2px solid rgba(255,255,255,.5);
+        border-radius: 20px;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 0 30px rgba(0,0,0,.5)
+
+    }
+
+        .transparent-card .card-body {
+            padding: 20px;
         }
+        .transparent-card .form-control {
+            background-color: transparent; 
+            border: none;
+            border-bottom: 2px solid #FFF;
+            border-radius: 0; 
+            box-shadow: none; 
+            padding-left: 0; 
+        }
+
+        .transparent-card .input-group-text {
+            background-color: transparent; 
+            border: none; 
+        }
+
+        .transparent-card .form-group .input-group-append{
+            position: absolute;
+            right: -5px; 
+            top: 50%; 
+            transform: translateY(-50%);
+            z-index: 1; 
+            background-color: transparent;
+            border: none;
+            color: #fff;
+        }
+
+    .card-header h4 {
+        font-size: 28px; /* Размер шрифта по вашему выбору */
+        color: white; /* Черный цвет текста */
+    }
+
+    .form-group label {
+        font-size: 21px; 
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)
+        }
+
+        .form-group input[type="text"],
+    .form-group input[type="password"] {
+        font-size: 22px;
+        color: #fff; 
+        padding-right:30px;
+    }
+    ul, li {
+        font-size: 18px; /* Размер шрифта по вашему выбору */
+        color: #fff; /* Черный цвет текста */
+    }
+    .fa-envelope{
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)
+    }
+.fa-lock{
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)
+}
+
+    .text-danger{
+        color: rgba(220,0,0)!important; /* Темно-красный цвет текста */
+        font-weight: bold;
+        font-size:18px;
+        
+    }
+</style>
+@if (TempData["Error"] != null)
+{
+    <div class="col-md-12 alert alert-danger">
+        <span><b>Sorry!</b> - @TempData["Error"]</span>
+    </div>
+}
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card mt-5">
+            <div class="card mt-5 transparent-card">
                 <div class="card-header">
-                    <h4 class="text-center">Sign up for a new account</h4>
+                    <h4 class="text-center">Sign up</h4>
                 </div>
                 <div class="card-body">
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="col-md-12 alert alert-danger">
+                            <span><b>Sorry!</b> - @TempData["Error"]</span>
+                        </div>
+                    }
+                    <form asp-action="Register">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        @if (TempData["Error"] != null)
-        {
-            <div class="col-md-12 alert alert-danger">
-                <span><b>Sorry!</b> - @TempData["Error"]</span>
+                        <div class="form-group">
+                            <label asp-for="EmailAddress" class="control-label">
+                                Email Address
+                            </label>
+                            <div class="input-group">
+                                <input asp-for="EmailAddress" class="form-control" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-envelope"></i> 
+                                        </span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                        </div>
 
-            </div>
-        }
-                <form asp-action="Register">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Password" class="control-label">
+                             
+                            </label>
+                            <div class="input-group">
+                                <input asp-for="Password" class="form-control" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-lock"></i> 
+                                    </span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <ul id="password-rules">
+                                <li id="rule-length" class="rule-invalid">At least 6 characters <span class="checkmark"></span></li>
+                                <li id="rule-lowercase" class="rule-invalid">At least 1 lowercase letter <span class="checkmark"></span></li>
+                                <li id="rule-uppercase" class="rule-invalid">At least 1 uppercase letter <span class="checkmark"></span></li>
+                                <li id="rule-nonalphanumeric" class="rule-invalid">At least 1 non-alphanumeric character <span class="checkmark"></span></li>
+                                <li id="rule-digit" class="rule-invalid">At least 1 digit <span class="checkmark"></span></li>
+                                <li id="rule-confirm" class="rule-invalid">Password matches confirmation <span class="checkmark"></span></li>
+                            </ul>
+                        </div>
 
-                    <div class="form-group">
-                        <label asp-for="EmailAddress" class="control-label"></label>
-                        <input asp-for="EmailAddress" class="form-control" />
-                        <span asp-validation-for="EmailAddress" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Password" class="control-label"></label>
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                        <ul id="password-rules">
-                            <li id="rule-length" class="rule-invalid">At least 6 characters <span class="checkmark"></span></li>
-                            <li id="rule-lowercase" class="rule-invalid">At least 1 lowercase letter <span class="checkmark"></span></li>
-                            <li id="rule-uppercase" class="rule-invalid">At least 1 uppercase letter <span class="checkmark"></span></li>
-                            <li id="rule-nonalphanumeric" class="rule-invalid">At least 1 non-alphanumeric character <span class="checkmark"></span></li>
-                            <li id="rule-digit" class="rule-invalid">At least 1 digit <span class="checkmark"></span></li>
-                            <li id="rule-confirm" class="rule-invalid">Password matches confirmation <span class="checkmark"></span></li>
-                        </ul>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="ConfirmPassword" class="control-label"></label>
-                        <input asp-for="ConfirmPassword" class="form-control" />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
+                        <div class="form-group">
+                            <label asp-for="ConfirmPassword" class="control-label">
+                               
+                            </label>
+                            <div class="input-group">
+                                <input asp-for="ConfirmPassword" class="form-control" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-lock"></i> 
+                                    </span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
 
                         <div class="form-group text-center">
                             <button class="btn btn-success" type="submit" style="margin-right: 15px;">Sign up</button>
                             <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Cancel</a>
                         </div>
-                </form>
+                    </form>
+                </div>
+                <p class="text-center" style="font-size: 18px;color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)">
+                    Already have an account?
+                    <a asp-controller="Account" asp-action="Login" >
+                        <span style="font-weight: bold; color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)">Sign in</span>
+                    </a>
+                </p>
             </div>
-        </div>
         </div>
     </div>
 </div>
-
 @section scripts{
 <script>
     $(document).ready(function () {
@@ -115,17 +230,13 @@
     function updateRuleStyle(ruleId, isViolated) {
         var $ruleElement = $('#' + ruleId);
             if (isViolated) {
-                $ruleElement.removeClass('rule-invalid');
-                $ruleElement.addClass('rule-valid');
+                $ruleElement.hide(); 
             } else {
-                $ruleElement.removeClass('rule-valid');
-                $ruleElement.addClass('rule-invalid');
+                $ruleElement.show(); 
             }
     }
     
 
 
-</script>
-
-
-        }
+    </script>
+    }
