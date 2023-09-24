@@ -1,0 +1,45 @@
+﻿@using TrueDogStore.ViewModels
+@model ExternalLoginViewModel 
+@{
+    ViewData["Title"] = "External Login Confirmation";
+}
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+    <p>Please enter your Email and Name to complete the registration process.</p>
+
+    <!-- Отображение иконки социальной сети -->
+    @if (Model.SelectedLoginProvider == "Google")
+    {
+        <img src="https://res.cloudinary.com/dmmy4w8ev/image/upload/v1695467838/ul9ktafvbb8mm9dygg3j.png" alt="Google Icon" class="social-icon" />
+    }
+    else if (Model.SelectedLoginProvider == "Facebook")
+    {
+        <img src="~/images/facebook-icon.png" alt="Facebook Icon" class="social-icon" />
+    }
+
+    <!-- Форма для ввода Email и Name -->
+    <form asp-controller="Account" asp-action ="ExternalLoginConfirmation" method="post" role="form" asp-routereturnurl="@ViewData["ReturnUrl"]">
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Confirm</button>
+    </form>
+</div>
+
+<style>
+    /* Стили для иконок социальных сетей */
+    .social-icon {
+        max-width: 30px; /* Размер иконки можно настроить по вашему усмотрению */
+        margin-right: 10px;
+    }
+</style>

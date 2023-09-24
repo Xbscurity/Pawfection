@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TrueDogStore.Models;
 
@@ -15,6 +16,30 @@ namespace TrueDogStore.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+        public IActionResult OauthCallback(string code, string error, string state)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(code))
+                {
+                    ViewBag.Message = "Successful" + code;
+                }
+                if (!string.IsNullOrEmpty(error))
+                {
+                    ViewBag.Message = "Error" + error;
+                }
+                if (!string.IsNullOrEmpty(state))
+                {
+                    ViewBag.MailAddress = state;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             return View();
         }
 

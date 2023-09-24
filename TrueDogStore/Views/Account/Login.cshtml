@@ -1,12 +1,14 @@
-﻿@using TrueDogStore.ViewModels
+﻿@using Microsoft.AspNetCore.Identity;
+@using TrueDogStore.ViewModels
 @model LoginViewModel
+@inject SignInManager<AppUser> signInManager
 @{
     ViewData["Title"] = "Login";
 }
 
 <style>
     .text-danger {
-        color: rgba(220,0,0) !important; /* Темно-красный цвет текста */
+        color: rgba(220,0,0) !important; 
         font-weight: bold;
         font-size: 18px;
     }
@@ -78,7 +80,7 @@
         font-size: 22px;
         color: #fff;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        padding-right: 30px;
+        padding-right: 80px;
     }
 
     ul, li {
@@ -95,6 +97,52 @@
     .fa-lock {
         color: #fff;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)
+    }
+
+    .fa-eye-slash {
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)
+    }
+
+    .fa-eye {
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)
+    }
+
+    .btn-social {
+        font-size: 18px;
+        padding: 10px 20px;
+        margin: 10px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .btn-google {
+        background-color: #4285f4;
+        color: white;
+        border: 1px solid #ccc;
+        padding: 10px 20px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        margin-left: 120px;
+        margin-top:25px;
+    }
+
+        .btn-google:hover {
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+            background-color: #357ae8;
+            color:white;
+        }
+
+    /* Стили для логотипа Google */
+    .google-logo {
+        width: 33px;
+        margin-right: 10px;
+        background-color: white;
+        padding: 5px; 
+        margin-left: -10px;
+        border-radius: 50%; 
     }
 
 </style>
@@ -130,8 +178,11 @@
                         <div class="form-group">
                             <label asp-for="Password" class="control-label">Password</label>
                             <div class="input-group">
-                                <input asp-for="Password" class="form-control" />
+                                <input asp-for="Password" class="form-control" type="password" id="passwordField" />
                                 <div class="input-group-append">
+                                    <span class="input-group-text" onclick="togglePasswordField()">
+                                        <i id="togglePasswordIcon" class="fas fa-eye-slash"></i>
+                                    </span>
                                     <span class="input-group-text">
                                         <i class="fas fa-lock"></i>
                                     </span>
@@ -145,7 +196,41 @@
                         </div>
                     </form>
                 </div>
-                <p class="text-center" style="font-size: 18px; color: #fff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)">
+                @{
+                    var schemes = await signInManager.GetExternalAuthenticationSchemesAsync();
+                    var loginProviders = schemes.ToList();
+                }
+                @if (loginProviders.Count() > 0)
+                {
+                    <div class="col-md-12">
+
+                        <h4 class="text-center" style="font-size: 18px; color: #fff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: 20px;">Or</h4>
+                        <div class="text-center">
+                            @foreach (var provider in loginProviders)
+                            {
+                                if (provider.Name.ToLower().CompareTo("google") == 0)
+                                {
+                                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" role="form" style="display: inline;">
+                                        <button type="submit" class="btn btn-social btn-google" name="provider" value="Google">
+                                            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" class="google-logo">
+                                            Continue with Google
+                                        </button>
+                                    </form>
+                                }
+                                else                              
+                                {
+                                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" role="form" style="display: inline;">
+                                        <button type="submit" class="btn btn-social btn-google" name="provider" value="@provider.Name">                                           
+                                            Continue with @provider.Name
+                                        </button>
+                                    </form>
+                                }
+
+                            }
+                        </div>
+                    </div>
+                }
+                <p class="text-center" style="font-size: 18px; color: #fff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); margin-top:20px">
                     Don't have an account?
                     <a asp-controller="Account" asp-action="Register" style=" color: #fff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); text-decoration: none;">
                         <span style="font-weight: bold;">Sign up</span>
@@ -155,3 +240,17 @@
         </div>
     </div>
 </div>
+<script>
+    function togglePasswordField() {
+        var passwordField = document.getElementById('passwordField');
+        var togglePasswordIcon = document.getElementById('togglePasswordIcon');
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            togglePasswordIcon.className = 'fas fa-eye';
+        } else {
+            passwordField.type = 'password';
+            togglePasswordIcon.className = 'fas fa-eye-slash';
+        }
+    }
+</script>
