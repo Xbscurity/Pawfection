@@ -57,6 +57,11 @@ namespace TrueDogStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginViewModel model, string? returnurl = null)
         {
+            if (User?.Identity?.IsAuthenticated == true)
+            {
+
+                return RedirectToAction("Index", "Home");
+            }
             returnurl = returnurl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
@@ -96,7 +101,7 @@ namespace TrueDogStore.Controllers
                 if (passwordCheck)
                 {
                     //Password correct, sign in
-                    var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
+                    var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, isPersistent:loginViewModel.RememberMe,lockoutOnFailure:false);
                     if(result.Succeeded)
                     {
                         return RedirectToAction("Index", "Home");   

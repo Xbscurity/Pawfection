@@ -11,6 +11,7 @@ namespace TrueDogStore.Models
         public int Id { get; set; }
         [ForeignKey("Pet_Activity")]
         public int Pet_ActivityId { get; set;}
+
         public Pet_Activity? Pet_Activity { get; set;}
         [ForeignKey("Size")]
         public int SizeId { get; set; }

@@ -19,7 +19,7 @@
     }
 
     body {
-        background-image:  url('/images/registerBg.jpg');
+        background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('/images/registerBg.jpg');
         background-size: cover; 
         background-repeat: no-repeat; 
        
@@ -108,6 +108,14 @@
         color: #fff;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)
     }
+
+    .custom-button {
+        padding-left: 20px;
+        padding-top: 10px;
+        padding-right: 20px;
+        padding-bottom: 10px;
+        text-align: center;
+    }
 </style>
 @if (TempData["Error"] != null)
 {
@@ -124,12 +132,6 @@
                     <h4 class="text-center">Sign up</h4>
                 </div>
                 <div class="card-body">
-                    @if (TempData["Error"] != null)
-                    {
-                        <div class="col-md-12 alert alert-danger">
-                            <span><b>Sorry!</b> - @TempData["Error"]</span>
-                        </div>
-                    }
                     <form asp-action="Register">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -153,7 +155,7 @@
                             <div class="input-group">
                                 <input asp-for="Password" class="form-control" type="password" id="passwordField" />
                                 <div class="input-group-append">
-                                    <span class="input-group-text" onclick="togglePasswordField()">
+                                    <span class="input-group-text" onclick="togglePasswordField('passwordField','togglePasswordIcon')">
                                         <i id="togglePasswordIcon" class="fas fa-eye-slash"></i>
                                     </span>
                                     <span class="input-group-text">
@@ -175,10 +177,10 @@
                         <div class="form-group">
                             <label asp-for="ConfirmPassword" class="control-label">Confirm Password</label>
                             <div class="input-group">
-                                <input asp-for="ConfirmPassword" class="form-control" type="password" id="passwordField" />
+                                <input asp-for="ConfirmPassword" class="form-control" type="password" id="passwordField1" />
                                 <div class="input-group-append">
-                                    <span class="input-group-text" onclick="togglePasswordField()">
-                                        <i id="togglePasswordIcon" class="fas fa-eye-slash"></i>
+                                    <span class="input-group-text" onclick="togglePasswordField('passwordField1','togglePasswordIcon1')">
+                                        <i id="togglePasswordIcon1" class="fas fa-eye-slash"></i>
                                     </span>
                                     <span class="input-group-text">
                                         <i class="fas fa-lock"></i>
@@ -189,8 +191,8 @@
                         </div>
 
                         <div class="form-group text-center">
-                            <button class="btn btn-success" type="submit" style="margin-right: 15px;">Sign up</button>
-                            <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Cancel</a>
+                            <button class="btn btn-success custom-button " type="submit" style="margin-right: 15px;">Sign up</button>
+                            <a class="btn btn-secondary custom-button " asp-controller="Home" asp-action="Index">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -208,27 +210,26 @@
 </div>
 @section scripts{
 <script>
-        function togglePasswordField() {
-            var passwordField = document.getElementById('passwordField');
-            var togglePasswordIcon = document.getElementById('togglePasswordIcon');
-
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                togglePasswordIcon.className = 'fas fa-eye';
-            } else {
-                passwordField.type = 'password';
-                togglePasswordIcon.className = 'fas fa-eye-slash';
-            }
+        function togglePasswordField(passwordId, iconId) {
+            var passwordField = document.getElementById(passwordId);
+            var togglePasswordIcon = document.getElementById(iconId);
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            togglePasswordIcon.className = 'fas fa-eye';
+        } else {
+            passwordField.type = 'password';
+            togglePasswordIcon.className = 'fas fa-eye-slash';
         }
+                }
     $(document).ready(function () {
-        $('#Password').keyup(function () {
+            $('#passwordField').keyup(function () {
             var password = $(this).val();
             checkPassword(password);
-                checkConfirmPassword($('#ConfirmPassword').val(), password);
+                checkConfirmPassword($('#passwordField1').val(), password);
         });
-        $('#ConfirmPassword').keyup(function () {
+            $('#passwordField1').keyup(function () {
             var confirmPassword = $(this).val();
-            var password = $('#Password').val();
+                var password = $('#passwordField').val();
             checkConfirmPassword(confirmPassword, password);
         });
     });
@@ -263,4 +264,4 @@
 
 
     </script>
-    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>}

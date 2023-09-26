@@ -18,8 +18,7 @@ namespace TrueDogStore.Repository
             return await _context.Pets
                 .Include(p => p.Breed)
                 .Include(p => p.Shelter)
-                .Where(p => p.Breed != null && p.Breed.Name
-                .Contains(searchTerm.Trim()))
+                .Where(p => p.Breed != null && p.Breed.Name.Contains(searchTerm.Trim()))
                 .ToListAsync();
         }
     }

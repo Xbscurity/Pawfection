@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using TrueDogStore.Data;
 using TrueDogStore.Helpers;
 using TrueDogStore.Interfaces;
+using TrueDogStore.Middelware;
 using TrueDogStore.Models;
 using TrueDogStore.Repository;
 using TrueDogStore.Services;
@@ -27,6 +29,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
+IConfigurationSection googleAuthConfig = builder.Configuration.GetSection("Authentication:Google");
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -34,8 +37,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     })
     .AddGoogle(options =>
     {
-        options.ClientId = "807815538221-p5nuk3o281fvq0sb6d61esgdvs9nqc7k.apps.googleusercontent.com";
-        options.ClientSecret = "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";
+        options.ClientId = googleAuthConfig["ClientId"];
+        options.ClientSecret = googleAuthConfig["ClientSecret"];
     });
     
 var app = builder.Build();  
@@ -53,7 +56,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+//app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

@@ -6,6 +6,7 @@ using TrueDogStore.Models;
 namespace TrueDogStore.Repository
 {
     public class AccountRepository : IAccountRepository
+
     {
         private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -16,10 +17,8 @@ namespace TrueDogStore.Repository
             _context = context;
         }
 
-        public async Task<AppUser> GetUserByIdAsync(string id)
-        {
-            return await _context.Users.FindAsync(id);
-        }
+        public ValueTask<AppUser> GetUserByIdAsync(string id) => _context.Users.FindAsync(id);
+
         public async Task<AppUser> GetUserByIdAsyncNoTracking(string id)
         {
             return await _context.Users

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Pet>
+﻿@using System.Security.Claims;
+@model IEnumerable<Pet>
 
 @{
     ViewData["Title"] = "Pets";
@@ -52,10 +53,13 @@
                                 <div class="d-flex justify-content-between align-items-center mt-2">
                                     <div class="btn-group">
                                         <a class="btn btn-sm btn-outline-primary" asp-controller="Pet" asp-action="Detail" asp-route-id="@pet.Id">View</a>
-                                        @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                                        @if (User.Identity.IsAuthenticated)
                                         {
-                                            <a asp-controller="Pet" asp-action="Edit" asp-route-id="@pet.Id" class="btn btn-sm btn-outline-success">Edit</a>
-                                            <a asp-controller="Pet" asp-action="Delete" asp-route-id="@pet.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                                            if (User.IsInRole("admin") || (pet.AppUserId != null && User.FindFirst(ClaimTypes.NameIdentifier).Value == pet.AppUserId))
+                                            {
+                                                <a asp-controller="Pet" asp-action="Edit" asp-route-id="@pet.Id" class="btn btn-sm btn-outline-success">Edit</a>
+                                                <a asp-controller="Pet" asp-action="Delete" asp-route-id="@pet.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                                            }
                                         }
                                     </div>
                                     <small class="text-muted">@pet.Breed.Breed_Group.Name</small>

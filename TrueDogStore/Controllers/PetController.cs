@@ -71,27 +71,27 @@ namespace TrueDogStore.Controllers
                     AppUserId = petVM.AppUserId,
                     Size = new Size
                     {                       
-                    Description = petVM.Size.Description
+                    Description = petVM.SizeDescription
                     },
                     Shelter = petVM.Shelter,
                     Pet_Activity = new Pet_Activity
                      {
-                      Name = petVM.Pet_Activity.Name,
-                      Description = petVM.Pet_Activity.Description,
+                      Name = petVM.PetActivityName,
+                      Description = petVM.PetActivityDescription,
                       Activity_Level = new Activity_Level
                           {
-                             Name = petVM.Pet_Activity.Activity_Level.Name,
-                             Description = petVM.Pet_Activity.Activity_Level.Description                 
+                             Name = petVM.ActivityLevelName,
+                             Description = petVM.ActivityLevelDescription                 
                           }                    
                     },
                     Breed = new Breed
                     {
-                    Name = petVM.Breed.Name,
-                    Description = petVM.Breed.Description,
+                    Name = petVM.BreedName,
+                    Description = petVM.BreedDescription,
                     Breed_Group = new Breed_Group
                         {
-                            Name = petVM.Breed.Breed_Group.Name,
-                            Description = petVM.Breed.Breed_Group.Description
+                            Name = petVM.BreedBreed_GroupName,
+                            Description = petVM.BreedBreed_GroupDescription
                         }   
                     
                     },
@@ -109,13 +109,15 @@ namespace TrueDogStore.Controllers
                     ImagePath = result.Url.ToString()                   
                 };
             _petRepository.Add(pet); 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","dashboard");
             }
             else
             {
                 ModelState.AddModelError("", "Photo upload failed");
             
             }
+            var shelters = await _shelterRepository.GetAll();
+            ViewBag.Shelters = shelters;
             return View(petVM); 
         }
         public async Task<IActionResult> Edit(int? id)
@@ -133,16 +135,24 @@ namespace TrueDogStore.Controllers
             }
 
             var petVM = new EditPetViewModel()
-            {
+            {   
+                AppUserId = pet.AppUserId,
                 SizeId = pet.SizeId,
-                Size = pet.Size,
+                SizeDescription = pet.Size.Description,
                 ShelterId = pet.ShelterId,
                 Shelter = pet.Shelter,
                 Pet_ActivityId = pet.Pet_ActivityId,
-                Pet_Activity = pet.Pet_Activity,				
-				BreedId = pet.BreedId,
-                Breed = pet.Breed,		
-                
+                PetActivityName = pet.Pet_Activity.Name,
+                PetActivityDescription = pet.Pet_Activity.Description,
+                ActivityLevelId = pet.Pet_Activity.Activity_LevelId,
+                ActivityLevelName = pet.Pet_Activity.Activity_Level.Name,
+                ActivityLevelDescription = pet.Pet_Activity.Activity_Level.Description,
+                BreedId = pet.BreedId,
+                BreedName = pet.Breed.Name,
+                BreedDescription = pet.Breed.Description,
+                Breed_GroupId = pet.Breed.Breed_GroupId,
+                BreedBreed_GroupName = pet.Breed.Breed_Group.Name,
+                BreedBreed_GroupDescription = pet.Breed.Breed_Group.Description,
                 Name = pet.Name,
                 Fur_Length = pet.Fur_Length,
                 Color = pet.Color,
@@ -161,6 +171,8 @@ namespace TrueDogStore.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, EditPetViewModel petVM)
         {
+            var shelters = await _shelterRepository.GetAll();
+            ViewBag.Shelters = shelters;
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("", "Failed to edit pet");
@@ -194,9 +206,10 @@ namespace TrueDogStore.Controllers
                 }
                 var pet = new Pet
                 {
+                    AppUserId = userPet.AppUserId,
                     Id = id,
-                    SizeId = petVM.SizeId,
-                    Size = petVM.Size,
+                    SizeId = userPet.SizeId,
+                    Size = new Size { Description = petVM.SizeDescription },
                     Shelter = new Shelter
                     {
                     Id = shelter.Id,
@@ -205,10 +218,30 @@ namespace TrueDogStore.Controllers
                     Email = shelter.Email,
                     Phone = shelter.Phone,
                     },
-                    Pet_ActivityId = petVM.Pet_ActivityId,
-                    Pet_Activity = petVM.Pet_Activity,
-                    BreedId = petVM.BreedId,
-                    Breed = petVM.Breed,
+                    Pet_ActivityId = userPet.Pet_ActivityId,
+                    Pet_Activity = new Pet_Activity
+                    {
+                        Name = petVM.PetActivityName,
+                        Description = petVM.PetActivityDescription,
+                        Activity_LevelId = userPet.Pet_Activity.Activity_LevelId,
+                        Activity_Level = new Activity_Level
+                        {
+                            Name = petVM.ActivityLevelName,
+                            Description = petVM.ActivityLevelDescription
+                        }
+                    },
+                    BreedId = userPet.BreedId,
+                    Breed = new Breed
+                    {
+                    Name = petVM.BreedName,
+                    Description = petVM.BreedDescription,
+                    Breed_GroupId = userPet.Breed.Breed_GroupId,
+                    Breed_Group = new Breed_Group
+                    {       
+                        Name = petVM.Name,
+                        Description = petVM.BreedDescription,
+                    } 
+                    },
                     Name = petVM.Name,
                     Fur_Length = petVM.Fur_Length,
                     Color = petVM.Color,
@@ -224,10 +257,11 @@ namespace TrueDogStore.Controllers
 
                 };
                 _petRepository.Update(pet);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Dashboard");
             }
             else
             {
+                
                 return View(petVM);
             }
         }
@@ -247,7 +281,7 @@ namespace TrueDogStore.Controllers
             await _photoService.DeletePhotoAsync(publicId);
             if (petDetails == null) return View("Error");
             _petRepository.Delete(petDetails);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Dashboard");
         }
     }
 }

@@ -23,7 +23,7 @@ namespace TrueDogStore.Repository
         }
         public async Task<List<Shelter>> GetAll()
         {
-            return await _context.Shelters.ToListAsync();
+            return await _context.Shelters.AsNoTracking().ToListAsync();
         }
     }
 }

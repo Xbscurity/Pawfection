@@ -6,33 +6,59 @@ namespace TrueDogStore.ViewModels
 {
     public class EditPetViewModel
     {
-            [Key]
-            public int Id { get; set; }
-            [ForeignKey("Pet_Activity")]
-            public int Pet_ActivityId { get; set; }
-            public Pet_Activity? Pet_Activity { get; set; }
-            [ForeignKey("Size")]
-            public int SizeId { get; set; }
-            public Size? Size { get; set; }
-            [ForeignKey("Breed")]
-            public int BreedId { get; set; }
-            public Breed? Breed { get; set; }
-            [ForeignKey("Shelter")]
-            public int ShelterId { get; set; }
-            public Shelter? Shelter { get; set; }
-            public IFormFile? ImagePath { get; set; }
-            public string? URL { get; set; }
-            public string? Name { get; set; }
-            public string? Fur_Length { get; set; }
-            public string? Color { get; set; }
-            public float? Weight { get; set; }
-            public int? Age { get; set; }
-            public string? Gender { get; set; }
-            public bool? Human_Friendly { get; set; }
-            public bool? Pet_Friendly { get; set; }
-            public bool? Apartment_Friendly { get; set; }
-            public bool? Leash_Trained { get; set; }
-            public bool? Litter_Trained { get; set; }
-            public string? AppUserId { get; set; }
+
+        [Key]
+        public int Id { get; set; }
+        [ForeignKey("Pet_Activity")]
+        public int Pet_ActivityId { get; set; }
+        [Required(ErrorMessage = "Pet Activity Name is required.")]
+        public string PetActivityName { get; set; }
+        [Required(ErrorMessage = "Pet Activity Description is required.")]
+        public string PetActivityDescription { get; set; }
+        [Required(ErrorMessage = "Activity Level Name is required.")]
+        [ForeignKey("Activity_Level")]
+        public int ActivityLevelId { get; set; }
+        public string ActivityLevelName { get; set; }
+        [Required(ErrorMessage = "Activity Level Description is required.")]
+        public string ActivityLevelDescription { get; set; }
+        [ForeignKey("Size")]
+        public int SizeId { get; set; }
+        [Required(ErrorMessage = "Size description is required.")]
+        public string SizeDescription { get; set; }
+        [ForeignKey("Breed")]
+        public int BreedId { get; set; }
+        [Required(ErrorMessage = "Breed Name is required.")]
+        public string BreedName { get; set; }
+        [Required(ErrorMessage = "Breed Description is required.")]
+        public string BreedDescription { get; set; }
+        [Required(ErrorMessage = "Breed Group Name is required.")]
+        [ForeignKey("Breed_Group")]
+        public int Breed_GroupId { get; set; }
+        public string BreedBreed_GroupName { get; set; }
+        [Required(ErrorMessage = "Breed Group Description is required.")]
+        public string BreedBreed_GroupDescription { get; set; }
+        [ForeignKey("Shelter")]
+        public int ShelterId { get; set; }
+        public Shelter? Shelter { get; set; }
+        public IFormFile? ImagePath { get; set; }
+        public string? URL { get; set;}
+        [Required(ErrorMessage = "Name is required.")]
+        public string Name { get; set; }
+        [Required(ErrorMessage = "Fur length is required.")]
+        public string? Fur_Length { get; set; }
+        [Required(ErrorMessage = "Color is required.")]
+        public string? Color { get; set; }
+        [Required(ErrorMessage = "Weight is required.")]
+        public float? Weight { get; set; }
+        [Required(ErrorMessage = "Age is required.")]
+        public int? Age { get; set; }
+        [Required(ErrorMessage = "Gender is required.")]
+        public string? Gender { get; set; }
+        public bool? Human_Friendly { get; set; }
+        public bool? Pet_Friendly { get; set; }
+        public bool? Apartment_Friendly { get; set; }
+        public bool? Leash_Trained { get; set; }
+        public bool? Litter_Trained { get; set; }
+        public string? AppUserId { get; set; }
     }
 }
