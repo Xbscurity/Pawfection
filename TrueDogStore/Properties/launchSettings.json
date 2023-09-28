@@ -7,7 +7,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7006;http://localhost:5096"
+      "applicationUrl": "https://0.0.0.0:17706;http://localhost:5096;https://juso.duckdns.org:7006;https://juso.duckdns.org:17706"
     },
     "IIS Express": {
       "commandName": "IISExpress",
